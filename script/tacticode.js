@@ -3,6 +3,7 @@ var Tacticode = {};
 Tacticode.init = function () {
 	Tacticode.stage = new PIXI.Container();
 	Tacticode.renderer = new PIXI.autoDetectRenderer(1024, 768);
+	Tacticode.projectiles = new ProjectilesAnimator(Tacticode.stage);
 	document.body.appendChild(Tacticode.renderer.view);
 
     Tacticode.loadTiles();
@@ -11,6 +12,7 @@ Tacticode.init = function () {
 };
 
 Tacticode.animate = function () {
+	Tacticode.projectiles.animate();
     requestAnimationFrame(Tacticode.animate);
     Tacticode.renderer.render(Tacticode.stage);
 }
@@ -26,6 +28,7 @@ Tacticode.loadTiles = function () {
 };
 
 Tacticode.tiles = [];
+Tacticode.testTexture = PIXI.Texture.fromImage("assets/test/test.png");
 
 Tacticode.GAME_WIDTH = 1024;
 Tacticode.GAME_HEIGHT = 768;

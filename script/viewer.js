@@ -45,6 +45,7 @@ $(function () {
     map.loadFromData(MapData);
 
     Tacticode.stage.addChild(map.container);
+	Tacticode.projectiles.add({x:0,y:0}, {x:1000,y:1000}, 10000,  new PIXI.Sprite(PIXI.Texture.fromImage("assets/test/fireball.png")));
     
     var oldCell = null;
     Tacticode.stage.interactive = true;
