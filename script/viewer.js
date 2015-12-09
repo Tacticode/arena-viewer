@@ -2,39 +2,41 @@ var MapData = {
     name: "Sample map",
     x: 12,
     y: 12,
-    background: "space.png",
+    background: "sky.jpg",
     grounds: [
         {z: 0, tile: 100}
     ],
     cells: [
-        {x: 1, y: 4, z: 1, tile: 100},
-        {x: 1, y: 2, z: 1, tile: 100},
+        {x: 1, y: 4, z: 1, tile: 101},
+        {x: 1, y: 2, z: 1, tile: 101},
         
-        {x: 3, y: 7, z: 1, tile: 100},
+        {x: 3, y: 7, z: 1, tile: 101},
         
-        {x: 2, y: 8, z: 1, tile: 100},
-        {x: 1, y: 8, z: 2, tile: 100},
-        {x: 1, y: 8, z: 1, tile: 100},
+        {x: 2, y: 8, z: 1, tile: 101},
+        {x: 1, y: 8, z: 2, tile: 101},
+        {x: 1, y: 8, z: 1, tile: 101},
         
-        {x: 2, y: 7, z: 1, tile: 100},
-        {x: 2, y: 7, z: 2, tile: 100},
+        {x: 2, y: 7, z: 1, tile: 101},
+        {x: 2, y: 7, z: 2, tile: 101},
         
-        {x: 2, y: 6, z: 1, tile: 100},
-        {x: 2, y: 6, z: 2, tile: 100},
-        {x: 2, y: 6, z: 3, tile: 100},
+        {x: 2, y: 6, z: 1, tile: 101},
+        {x: 2, y: 6, z: 2, tile: 101},
+        {x: 2, y: 6, z: 3, tile: 101},
         
-        {x: 2, y: 5, z: 1, tile: 100},
-        {x: 2, y: 5, z: 2, tile: 100},
-        {x: 2, y: 5, z: 3, tile: 100},
-        {x: 2, y: 5, z: 4, tile: 100},
+        {x: 2, y: 5, z: 1, tile: 101},
+        {x: 2, y: 5, z: 2, tile: 101},
+        {x: 2, y: 5, z: 3, tile: 101},
+        {x: 2, y: 5, z: 4, tile: 101},
         
-        
-        {x: 7, y: 8, z: 1, tile: 100},
-        {x: 8, y: 8, z: 1, tile: 100},
-        {x: 9, y: 8, z: 1, tile: 100},
-        {x: 8, y: 8, z: 2, tile: 100},
-        {x: 9, y: 8, z: 2, tile: 100},
-        {x: 9, y: 8, z: 3, tile: 100}
+        {x: 7, y: 8, z: 1, tile: 101},
+        {x: 8, y: 8, z: 1, tile: 101},
+        {x: 9, y: 8, z: 1, tile: 101},
+        {x: 8, y: 8, z: 2, tile: 101},
+        {x: 9, y: 8, z: 2, tile: 101},
+        {x: 9, y: 8, z: 3, tile: 99},
+		
+        {x: 5, y: 2, z: 1, tile: 99},
+        {x: 8, y: 4, z: 1, tile: 99}
     ],
 }
 

@@ -1,0 +1,9 @@
+{
+	background: 'sky.png',
+    tiles: {
+		'GROUND' : { texture: 'stone.png' },
+		'WATER'  : { texture: 'water.png' },
+		'TREE'   : { texture: 'water.png', groundTexture: 'grass.png' },
+		'FOG'    : { texture: 'fog.png', groundTexture: 'stone.png' }
+	}
+}
