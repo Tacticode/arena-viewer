@@ -10,6 +10,7 @@ Tacticode.Map = function () {
 
 Tacticode.Map.prototype.loadFromData = function (data) {
     this.name = data.name;
+	this.style = Tacticode.styles[data.style];
     this.size = {
         x: data.x,
         y: data.y,
@@ -18,12 +19,10 @@ Tacticode.Map.prototype.loadFromData = function (data) {
         x: Tacticode.GAME_WIDTH / 2,
         y: Tacticode.GAME_WIDTH / 4,
     }
-    this.background = data.background;
-    this.grounds = data.grounds || [];
+	
     this.cells = data.cells || [];
-    this.shadows = data.shadows;
+    this.background = this.style.background;
     
-    this._createGrounds();
     this._createSprites();
 };
 
@@ -52,43 +51,40 @@ Tacticode.Map.prototype._createSprites = function () {
         var cellData = this.cells[i];
             
         if (cellData.tile !== 0) {
-            var tile = new PIXI.Sprite(Tacticode.tiles[cellData.tile - 1]);
-            tile.anchor.x = 0.5;
-            tile.anchor.y = 0.5;
-                
-            var coords = mapToProjection(cellData.x, cellData.y, cellData.z);
-            tile.position.x = coords[0] + Tacticode.GAME_WIDTH / 2;
-            tile.position.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
-                
-            var darkness = 0xFF - cellData.z * 15;
-            if (cellData.z == 0 && this.containsCell(cellData.x, cellData.y - 1, cellData.z + 1)) {
-                darkness -= 0x50;
-            }
-            tile.tint = (darkness << 16) + (darkness << 8) + darkness;
-            
-            cellData.sprite = tile;
-            this.container.addChild(tile);
+			cellData.z = cellData.z || 0;
+			
+			if (cellData.z > 0) {
+				for (var z = 0; z < cellData.z; ++z) {
+					var texture = PIXI.Texture.fromImage("assets/sprites/" + this.style.tiles[cellData.tile].groundTexture);
+					this._createSpriteAtPosition(texture, cellData.x, cellData.y, z);
+				}
+			}
+		
+			var texture = PIXI.Texture.fromImage("assets/sprites/" + this.style.tiles[cellData.tile].texture);
+			cellData.sprite = this._createSpriteAtPosition(texture, cellData.x, cellData.y, cellData.z);
         }
     }
 };
 
-Tacticode.Map.prototype._createGrounds = function () {
-    for (var i = 0; i < this.grounds.length; ++i) {
-        var ground = this.grounds[i];
-        for (var mapX = 0; mapX < this.size.x; ++mapX) {
-            for (var mapY = 0; mapY < this.size.y; ++mapY) {
-                if (!this.containsCell(mapX, mapY, ground.z)) { 
-                    this.cells.push({
-                        x: mapX,
-                        y: mapY,
-                        z: ground.z,
-                        tile: ground.tile
-                    });
-                }
-            }
-        }
+Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
+    var tile = new PIXI.Sprite(texture);
+    tile.anchor.x = 0.5;
+    tile.anchor.y = 0.5;
+                
+    var coords = mapToProjection(x, y, z);
+    tile.position.x = coords[0] + Tacticode.GAME_WIDTH / 2;
+    tile.position.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
+                
+    var darkness = 0xFF - z * 15;
+    if (z == 0 && this.containsCell(x, y - 1, z + 1)) {
+        darkness -= 0x50;
     }
-};
+    tile.tint = (darkness << 16) + (darkness << 8) + darkness;
+            
+    this.container.addChild(tile);
+	
+	return tile;
+}
 
 // TODO trier les trois fonctions suivantes : 
 
