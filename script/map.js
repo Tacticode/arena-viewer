@@ -24,6 +24,29 @@ Tacticode.Map.prototype.loadFromData = function (data) {
     this.background = this.style.background;
     
     this._createSprites();
+	
+
+	var oldCell = null;
+	this.container.interactive = true;
+	var root = this;
+	this.container.on('mousemove', function (data) {
+		var mappos = projectionToMap(data.data.global.x - Tacticode.GAME_WIDTH / 2, data.data.global.y - Tacticode.GAME_HEIGHT / 4);
+		var cell = null;
+		var z = 10;
+		while (cell == null && z >= 0) {
+			cell = root.getCell(mappos[0] + z, mappos[1] + z, z);
+			z -= 1;
+		}
+		if (oldCell) {
+			oldCell.sprite.tint += 0xFFFF;
+		}
+		if (cell) {
+			cell.sprite.tint -= 0xFFFF;
+			oldCell = cell;
+		} else {
+			oldCell = null;
+		}
+	});
 };
 
 Tacticode.Map.prototype.getCell = function (x, y, z) {
@@ -76,9 +99,9 @@ Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
     tile.position.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
                 
     var darkness = 0xFF - z * 15;
-    if (z == 0 && this.containsCell(x, y - 1, z + 1)) {
-        darkness -= 0x50;
-    }
+    //if (z == 0 && this.containsCell(x, y - 1, z + 1)) {
+    //    darkness -= 0x50;
+    //}
     tile.tint = (darkness << 16) + (darkness << 8) + darkness;
             
     this.container.addChild(tile);
