@@ -27,7 +27,7 @@ Tacticode.maps.sample = {
         {x: 4, y: 0, tile: 'GROUND', accessible: true, los: true},
         {x: 4, y: 1, tile: 'GROUND', accessible: true, los: true},
         {x: 4, y: 2, tile: 'GROUND', accessible: true, los: true},
-        {x: 4, y: 3, z: 1, tile: 'TREE', accessible: true, los: true},
+        {x: 4, y: 3, z: 1, tile: 'TREE', accessible: false, los: false},
         {x: 4, y: 4, tile: 'GROUND', accessible: true, los: true}
     ]
 }
