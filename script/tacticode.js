@@ -22,7 +22,10 @@ var demo = function* (){
 	while (true){
 		for (var i = 0; i < 60; i++)
 			yield null;
-		Tacticode.projectiles.add({x:480,y:110}, {x:320,y:180}, 20,  new PIXI.Sprite(PIXI.Texture.fromImage("assets/test/fireball.png")));
+		Tacticode.projectiles.add({x:480,y:110}, {x:320,y:180},  Projectile.Type.Fire);
+		for (var i = 0; i < 60; i++)
+			yield null;
+		Tacticode.projectiles.add({x:320,y:180}, {x:480,y:110},  Projectile.Type.Ice);
 	}
 }
 
