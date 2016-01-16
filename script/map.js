@@ -30,7 +30,7 @@ Tacticode.Map.prototype.loadFromData = function (data) {
 	this.container.interactive = true;
 	var root = this;
 	this.container.on('mousemove', function (data) {
-		var mappos = projectionToMap(data.data.global.x - Tacticode.GAME_WIDTH / 2, data.data.global.y - Tacticode.GAME_HEIGHT / 4);
+		var mappos = root._projectionToMap(data.data.global.x - Tacticode.GAME_WIDTH / 2, data.data.global.y - Tacticode.GAME_HEIGHT / 4);
 		var cell = null;
 		var z = 10;
 		while (cell == null && z >= 0) {
@@ -69,7 +69,7 @@ Tacticode.Map.prototype._createSprites = function () {
         var background = new PIXI.Sprite(PIXI.Texture.fromImage("assets/textures/" + this.background));
         this.container.addChild(background);
     }
-    this.cells.sort(compareCells);
+    this.cells.sort(this._compareCells);
     for (var i = 0; i < this.cells.length; ++i) {
         var cellData = this.cells[i];
             
@@ -94,7 +94,7 @@ Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
     tile.anchor.x = 0.5;
     tile.anchor.y = 0.5;
                 
-    var coords = mapToProjection(x, y, z);
+    var coords = this._mapToProjection(x, y, z);
     tile.position.x = coords[0] + Tacticode.GAME_WIDTH / 2;
     tile.position.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
                 
@@ -107,28 +107,26 @@ Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
     this.container.addChild(tile);
 	
 	return tile;
-}
+};
 
-// TODO trier les trois fonctions suivantes : 
-
-function compareCells(a, b) {
+Tacticode.Map.prototype._compareCells = function (a, b) {
     if (a.z !== b.z) return (a.z - b.z);
-    if (a.y !== b.y) return (a.y - b.y);
-    return a.x - b.x;
-}
+    if (a.x !== b.x) return (a.x - b.x);
+    return a.y - b.y;
+};
 
-function mapToProjection(x, y, z) {
+Tacticode.Map.prototype._mapToProjection = function (x, y, z) {
     return [
         (x - y) * Tacticode.CELL_WIDTH_HALF,
         (x + y - z * 2) * Tacticode.CELL_HEIGHT_HALF
     ];
-}
+};
 
-function projectionToMap(x, y) {
+Tacticode.Map.prototype._projectionToMap = function (x, y) {
     x /= Tacticode.CELL_WIDTH_HALF;
     y /= Tacticode.CELL_HEIGHT_HALF;
     return [
         Math.ceil((x + y) / 2),
         Math.ceil((y - x) / 2)
     ];
-}
+};
