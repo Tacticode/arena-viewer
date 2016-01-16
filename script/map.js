@@ -3,14 +3,26 @@ Tacticode.Map = function () {
     this.x = 0;
     this.y = 0;
     this.background = null;
-    this.grounds = null;
     this.cells = null;
     this.container = null;
 };
 
-Tacticode.Map.prototype.loadFromData = function (data) {
-    this.name = data.name;
-	this.style = Tacticode.styles[data.style];
+Tacticode.Map.MAP_PATH = 'script/maps/';
+Tacticode.Map.STYLE_PATH = 'script/styles/';
+Tacticode.Map.EXTENSION = '.json';
+
+Tacticode.Map.prototype.loadFromName = function (name, callback) {
+	var url = Tacticode.Map.MAP_PATH + name + Tacticode.Map.EXTENSION;
+	var root = this;
+	jQuery.getJSON(url, function (data) {
+		root.loadFromData(data, callback);
+	}).fail(function (data, err, text) {
+		console.error('Cannot load map ' + url + ':', err, text);
+	});
+};
+
+Tacticode.Map.prototype.loadFromData = function (data, callback) {
+	this.name = data.name;
     this.size = {
         x: data.x,
         y: data.y,
@@ -21,11 +33,46 @@ Tacticode.Map.prototype.loadFromData = function (data) {
     }
 	
     this.cells = data.cells || [];
-    this.background = this.style.background;
     
-    this._createSprites();
-	
+	var root = this;
+	this._loadStyleFromName(data.style, function () {
+		root.background = root.style.background;
+		root._createSprites();
+		root._initEvents();
+		if (callback) {
+			callback();
+		}
+	});
+};
 
+Tacticode.Map.prototype.getCell = function (x, y, z) {
+    for (var i = 0; i < this.cells.length; ++i) {
+        var cell = this.cells[i];
+        if (cell.x == x && cell.y == y && cell.z == z) {
+            return cell;
+        }
+    }
+    return null;
+};
+
+Tacticode.Map.prototype.containsCell = function (x, y, z) {
+    return (this.getCell(x, y, z) != null);
+};
+
+Tacticode.Map.prototype._loadStyleFromName = function (name, callback) {
+	var url = Tacticode.Map.STYLE_PATH + name + Tacticode.Map.EXTENSION;
+	var root = this;
+	jQuery.getJSON(url, function (data) {
+		root.style = data;
+		if (callback) {
+			callback();
+		}
+	}).fail(function (data, err, text) {
+		console.error('Cannot load style ' + url + ':', err, text);
+	});
+};
+
+Tacticode.Map.prototype._initEvents = function () {
 	var oldCell = null;
 	this.container.interactive = true;
 	var root = this;
@@ -47,20 +94,6 @@ Tacticode.Map.prototype.loadFromData = function (data) {
 			oldCell = null;
 		}
 	});
-};
-
-Tacticode.Map.prototype.getCell = function (x, y, z) {
-    for (var i = 0; i < this.cells.length; ++i) {
-        var cell = this.cells[i];
-        if (cell.x == x && cell.y == y && cell.z == z) {
-            return cell;
-        }
-    }
-    return null;
-};
-
-Tacticode.Map.prototype.containsCell = function (x, y, z) {
-    return (this.getCell(x, y, z) != null);
 };
 
 Tacticode.Map.prototype._createSprites = function () {

@@ -6,9 +6,7 @@ var Tacticode = {
     GAME_WIDTH: 1024,
     GAME_HEIGHT: 768,
     CELL_WIDTH_HALF: 32,
-    CELL_HEIGHT_HALF: 16,
-	styles: {},
-	maps: {}
+    CELL_HEIGHT_HALF: 16
 };
 
 Tacticode.init = function () {
@@ -24,11 +22,11 @@ Tacticode.animate = function () {
     requestAnimationFrame(Tacticode.animate);
 	Tacticode.update();
     Tacticode.renderer.render(Tacticode.stage);
-}
+};
 
 /**
  * Function called once per frame.
  */
 Tacticode.update = function () {
 	Tacticode.projectiles.animate();
-}
+};
