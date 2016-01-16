@@ -19,13 +19,16 @@ var demo = function* (){
 	c2.x = 350;
 	c2.y = 190;
 	
+	var pos1 = {x:c1.x - c1.width / 2 - 10, y:c1.y - c1.height / 2 - 15};
+	var pos2 = {x:c2.x - c2.width / 2 - 15, y:c2.y - c2.height / 2 - 10};
+	
 	while (true){
 		for (var i = 0; i < 60; i++)
 			yield null;
-		Tacticode.projectiles.add({x:480,y:110}, {x:320,y:180},  Projectile.Type.Fire);
+		Tacticode.projectiles.add(pos1, pos2,  Projectile.Type.Fire);
 		for (var i = 0; i < 60; i++)
 			yield null;
-		Tacticode.projectiles.add({x:320,y:180}, {x:480,y:110},  Projectile.Type.Ice);
+		Tacticode.projectiles.add(pos2, pos1,  Projectile.Type.Ice);
 	}
 }
 

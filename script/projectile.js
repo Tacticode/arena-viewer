@@ -15,7 +15,7 @@ Projectile = function(startPosition, endPosition, type, animator) {
 		this.particle = Projectile.Type.IceParticle;
 }
 
-function randomInt(min, max) {
+var randomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -48,7 +48,7 @@ Projectile.prototype.particleEffect = function() {
 			this.animator.add(pos, endPos, this.particle);
 		}
 	}
-	else if (Math.random() < 0.1){
+	else if (Math.random() < 0.2){
 		var pos = {x:this.sprite.x + this.sprite.width / 2 - this.particle.texture.width / 2,
 				y:this.sprite.y + this.sprite.height / 2 - this.particle.texture.height / 2};
 		var endPos = randomMove(pos, this.type.particleDistance);
