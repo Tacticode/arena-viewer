@@ -41,7 +41,7 @@ Tacticode.Entity.prototype.updateSpriteDirection = function(startX, startY, endX
 		if (endY > startY)
 			this.sprite.texture = this.textures.dl;
 		else if (endY < startY)
-			this.sprite.texture = this.textures.dr;
+			this.sprite.texture = this.textures.ur;
 	}
 }
 
@@ -110,7 +110,6 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		
 		Tacticode.projectiles.addString(
 		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
-		//{x:entity.sprite.x, y:entity.sprite.y},
 		{x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		action.skill);
 		yield* Tacticode.Test.wait(0.5);

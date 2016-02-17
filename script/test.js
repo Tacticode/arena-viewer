@@ -39,7 +39,6 @@ Tacticode.Test.demoJSON = function* (){
 	Tacticode.entities.loadEntities(fight.entities, map);
 	
 	for (var a of fight.actions){
-		console.log(a)
 		yield* Tacticode.entities.animateAction(a);
 	}
 	

@@ -17,6 +17,8 @@ Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 				this.particle = Tacticode.Projectile.Type[t];
 				break;
 			}
+	if (type.orientedTexture)
+		this.sprite.rotation = Math.atan2(y, x);
 }
 
 Tacticode.randomInt = function (min, max) {
@@ -29,22 +31,19 @@ Tacticode.Projectile.randomMove = function(startPos, length){
 }
 
 Tacticode.Projectile.Type = {
-	FireParticle:{name:"FireParticle", speed:4, oritentedTexture:false,
+	FireParticle:{name:"FireParticle", speed:4, orientedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/particle_fire.png"),
 			particleType:null},
-	IceParticle:{name:"IceParticle", speed:3, oritentedTexture:false,
+	IceParticle:{name:"IceParticle", speed:3, orientedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/particle_ice.png"),
 			particleType:null},
-	/*Arrow:{name:"arrow", speed:12, oritentedTexture:true,
-			texture:[PIXI.Texture.fromImage("assets/effect/arrow_dl.png"),
-			PIXI.Texture.fromImage("assets/effect/arrow_dr.png"),
-			PIXI.Texture.fromImage("assets/effect/arrow_ul.png"),
-			PIXI.Texture.fromImage("assets/effect/arrow_ur.png")],
-			particleType:null},*/
-	Fire:{name:"fireball", speed:15, oritentedTexture:false,
+	Arrow:{name:"arrow", speed:6, orientedTexture:true,
+			texture:PIXI.Texture.fromImage("assets/effect/arrow.png"),
+			particleType:null},
+	Fire:{name:"fireball", speed:15, orientedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/fireball.png"),
 			particleType:"FireParticle", particleDistance:75},
-	Ice:{name:"iceball", speed:8, oritentedTexture:false,
+	Ice:{name:"iceball", speed:8, orientedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/iceball.png"),
 			particleType:"IceParticle", particleDistance:30}
 }
