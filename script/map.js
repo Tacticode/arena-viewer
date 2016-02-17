@@ -126,17 +126,17 @@ Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
     var tile = new PIXI.Sprite(texture);
     tile.anchor.x = 0.5;
     tile.anchor.y = 0.5;
-                
+    
     var coords = this._mapToProjection(x, y, z);
     tile.position.x = coords[0] + Tacticode.GAME_WIDTH / 2;
     tile.position.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
-                
+    
     var darkness = 0xFF - z * 15;
     //if (z == 0 && this.containsCell(x, y - 1, z + 1)) {
     //    darkness -= 0x50;
     //}
     tile.tint = (darkness << 16) + (darkness << 8) + darkness;
-            
+    
     this.container.addChild(tile);
 	
 	return tile;

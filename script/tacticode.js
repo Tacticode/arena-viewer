@@ -13,7 +13,8 @@ Tacticode.init = function () {
 	Tacticode.stage = new PIXI.Container();
 	Tacticode.renderer = new PIXI.autoDetectRenderer(1024, 768);
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
-	Tacticode.demo = Tacticode.Test.demo();
+	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
+	Tacticode.demo = Tacticode.Test.demoJSON();
 	document.body.appendChild(Tacticode.renderer.view);
 
     requestAnimationFrame(Tacticode.animate);

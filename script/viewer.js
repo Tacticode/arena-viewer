@@ -6,9 +6,9 @@
 $(function () {
     Tacticode.init();
     
-    var map = new Tacticode.Map();
+    /*var map = new Tacticode.Map();
 
 	map.loadFromName('sample', function () {
 		Tacticode.stage.addChild(map.container);
-	});
+	});// déplacé dans test.js*/
 });
