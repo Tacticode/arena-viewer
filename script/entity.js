@@ -24,19 +24,25 @@ Tacticode.Entity.prototype.updateSpritePos = function() {
     this.sprite.x = coords[0] + Tacticode.GAME_WIDTH / 2;
     this.sprite.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
 	
-	var darkness = 0xFF - this.z * 15;
-    this.sprite.tint = (darkness << 16) + (darkness << 8) + darkness;
+	/*var darkness = 0xFF - this.z * 15;
+    this.sprite.tint = (darkness << 16) + (darkness << 8) + darkness;*/
 }
 
 Tacticode.Entity.prototype.updateSpriteDirection = function(startX, startY, endX, endY) {
-	if (endX > startX)
-		this.sprite.texture = this.textures.dr;
-	else if (endX < startX)
-		this.sprite.texture = this.textures.ul;
-	else if (endY > startY)
-		this.sprite.texture = this.textures.dl;
-	else if (endY < startY)
-		this.sprite.texture = this.textures.dr;
+	var distX = Math.abs(endX - startX);
+	var distY = Math.abs(endY - startY);
+	if (distX >= distY){
+		if (endX > startX)
+			this.sprite.texture = this.textures.dr;
+		else if (endX < startX)
+			this.sprite.texture = this.textures.ul;
+	}
+	else{
+		if (endY > startY)
+			this.sprite.texture = this.textures.dl;
+		else if (endY < startY)
+			this.sprite.texture = this.textures.dr;
+	}
 }
 
 Tacticode.Entity.Textures = {
@@ -78,23 +84,35 @@ Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map) {
 
 Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	var entity = this.entities[action.entity];
+	var startX = entity.x;
+	var startY = entity.y;
+	var startZ = entity.z;
+	var endX = action.x;
+	var endY = action.y;
+	var endZ = action.z || entity.z;
+	
+	entity.updateSpriteDirection(startX, startY, endX, endY);
 	if (action.type == "move"){
-		var startX = entity.x;
-		var startY = entity.y;
-		var endX = action.x;
-		var endY = action.y;
 		var nbFrame = 45;
-		entity.updateSpriteDirection(startX, startY, endX, endY);
 		for (var i = 1; i <= nbFrame; ++i){
 			entity.x = (startX * (nbFrame - i) + endX * i) / nbFrame;
 			entity.y = (startY * (nbFrame - i) + endY * i) / nbFrame;
+			entity.z = (startZ * (nbFrame - i) + endZ * i) / nbFrame;
 			entity.updateSpritePos();
 			yield null;
 		}
 	}
 	else if (action.type == "skill"){
 		console.log(action.skill);
-		for (var i = 0; i < 30; ++i)
-			yield null;
+		
+		var startCoords = this.map._mapToProjection(startX, startY, startZ);
+		var endCoords = this.map._mapToProjection(endX, endY, endZ);
+		
+		Tacticode.projectiles.addString(
+		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
+		//{x:entity.sprite.x, y:entity.sprite.y},
+		{x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4},
+		action.skill);
+		yield* Tacticode.Test.wait(0.5);
 	}
 }

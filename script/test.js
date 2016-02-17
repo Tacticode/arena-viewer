@@ -8,9 +8,13 @@ Tacticode.Test.demo = function* (){
 	c1.y = 130;
 	c2.x = 350;
 	c2.y = 190;
+	c1.anchor.x = 0.5;
+	c1.anchor.y = 0.5;
+	c2.anchor.x = 0.5;
+	c2.anchor.y = 0.5;
 	
-	var pos1 = {x:c1.x - c1.width / 2 - 10, y:c1.y - c1.height / 2 - 15};
-	var pos2 = {x:c2.x - c2.width / 2 - 15, y:c2.y - c2.height / 2 - 10};
+	var pos1 = {x:c1.x, y:c1.y};
+	var pos2 = {x:c2.x, y:c2.y};
 	
 	while (true){
 		yield* Tacticode.Test.wait(1);
@@ -30,8 +34,7 @@ Tacticode.Test.demoJSON = function* (){
 		Tacticode.stage.addChild(map.container);
 	});
 	
-	
-	yield* Tacticode.Test.wait(1);
+	yield* Tacticode.Test.wait(0.1);
 	
 	Tacticode.entities.loadEntities(fight.entities, map);
 	
@@ -40,10 +43,7 @@ Tacticode.Test.demoJSON = function* (){
 		yield* Tacticode.entities.animateAction(a);
 	}
 	
-	/*var d = Tacticode.Test.demo();
-	for (var i = 0; i < 600; i++)
-		yield d.next();*/
-	console.log("end test");
+	console.log("end demo");
 }
 
 Tacticode.Test.wait = function* (time){

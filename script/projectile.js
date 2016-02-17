@@ -2,11 +2,13 @@ Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 	this.start = startPosition;
 	this.end = endPosition;
 	var x = startPosition.x - endPosition.x;
-	var y = startPosition.y - endPosition.y;
+	var y = startPosition.y - endPosition.y; // ajouter z ?
 	this.nbFrames = Math.sqrt((x * x) + (y * y)) / type.speed;
 	this.currentFrame = 0;
 	this.type = type;
 	this.sprite = new PIXI.Sprite(type.texture);
+	this.sprite.anchor.x = 0.5;
+	this.sprite.anchor.y = 0.5;
 	this.animator = animator;
 	this.particle = null;
 	if (type.particleType != null)
@@ -27,16 +29,22 @@ Tacticode.Projectile.randomMove = function(startPos, length){
 }
 
 Tacticode.Projectile.Type = {
-	FireParticle:{name:"FireParticle", speed:4,
+	FireParticle:{name:"FireParticle", speed:4, oritentedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/particle_fire.png"),
 			particleType:null},
-	IceParticle:{name:"IceParticle", speed:3,
+	IceParticle:{name:"IceParticle", speed:3, oritentedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/particle_ice.png"),
 			particleType:null},
-	Fire:{name:"Fire", speed:15,
+	/*Arrow:{name:"arrow", speed:12, oritentedTexture:true,
+			texture:[PIXI.Texture.fromImage("assets/effect/arrow_dl.png"),
+			PIXI.Texture.fromImage("assets/effect/arrow_dr.png"),
+			PIXI.Texture.fromImage("assets/effect/arrow_ul.png"),
+			PIXI.Texture.fromImage("assets/effect/arrow_ur.png")],
+			particleType:null},*/
+	Fire:{name:"fireball", speed:15, oritentedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/fireball.png"),
 			particleType:"FireParticle", particleDistance:75},
-	Ice:{name:"Ice", speed:8,
+	Ice:{name:"iceball", speed:8, oritentedTexture:false,
 			texture:PIXI.Texture.fromImage("assets/effect/iceball.png"),
 			particleType:"IceParticle", particleDistance:30}
 }
@@ -44,15 +52,13 @@ Tacticode.Projectile.Type = {
 Tacticode.Projectile.prototype.particleEffect = function() {
 	if (this.currentFrame > this.nbFrames){
 		for (var i = 0; i < 10; i++){
-			var pos = {x:this.sprite.x + this.sprite.width / 2 - this.particle.texture.width / 2,
-					y:this.sprite.y + this.sprite.height / 2 - this.particle.texture.height / 2};
+			var pos = {x:this.sprite.x,	y:this.sprite.y};
 			var endPos = Tacticode.Projectile.randomMove(pos, this.type.particleDistance);
 			this.animator.add(pos, endPos, this.particle);
 		}
 	}
 	else if (Math.random() < 0.2){
-		var pos = {x:this.sprite.x + this.sprite.width / 2 - this.particle.texture.width / 2,
-				y:this.sprite.y + this.sprite.height / 2 - this.particle.texture.height / 2};
+		var pos = {x:this.sprite.x, y:this.sprite.y};
 		var endPos = Tacticode.Projectile.randomMove(pos, this.type.particleDistance);
 		this.animator.add(pos, endPos, this.particle);
 	}
@@ -86,7 +92,18 @@ Tacticode.ProjectilesAnimator.prototype.animate = function() {
 }
 
 Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPosition, type) {
+	/*console.log("add projectile " + startPosition.x + " " + startPosition.y + " "
+		+ endPosition.x + " " + endPosition.y + " " + type.name);*/
 	var projectile = new Tacticode.Projectile(startPosition, endPosition, type, this);
 	this.projectiles.push(projectile);
 	this.container.addChild(projectile.sprite);
+}
+
+Tacticode.ProjectilesAnimator.prototype.addString = function(startPosition, endPosition, typeStr) {
+	var type = null;
+	for (t in Tacticode.Projectile.Type)
+		if (Tacticode.Projectile.Type[t].name == typeStr)
+			type = Tacticode.Projectile.Type[t];
+	if (type)
+		this.add(startPosition, endPosition, type);
 }
