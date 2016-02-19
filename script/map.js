@@ -87,9 +87,16 @@ Tacticode.Map.prototype._initEvents = function () {
 		z += 1;
 		if (oldCell) {
 			oldCell.sprite.tint = 0xFFFFFF;
+			for (var i = 0; i < oldCell.subSprites.length; ++i) {
+				oldCell.subSprites[i].tint = 0xFFFFFF;
+			}
 		}
 		if (cell) {
-			cell.sprite.tint = cell.accessible ? 0x50FF50 : 0xFF5050;
+			var color = cell.accessible ? 0x50FF50 : 0xFF5050;
+			cell.sprite.tint = color;
+			for (var i = 0; i < cell.subSprites.length; ++i) {
+				cell.subSprites[i].tint = color;
+			}
 			oldCell = cell;
 		} else {
 			oldCell = null;
@@ -114,11 +121,13 @@ Tacticode.Map.prototype._createSprites = function () {
             
         if (cellData.tile !== 0) {
 			cellData.z = cellData.z || 0;
+			cellData.subSprites = [];
 			
 			if (cellData.z > 0) {
 				for (var z = 0; z < cellData.z; ++z) {
 					var texture = PIXI.Texture.fromImage("assets/sprites/" + this.style.tiles[cellData.tile].groundTexture);
-					this._createSpriteAtPosition(texture, cellData.x, cellData.y, z);
+					var sprite = this._createSpriteAtPosition(texture, cellData.x, cellData.y, z);
+					cellData.subSprites.push(sprite);
 				}
 			}
 		
