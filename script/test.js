@@ -24,25 +24,24 @@ Tacticode.Test.demo = function* (){
 	}
 }
 
-Tacticode.Test.demoJSON = function* (){
+Tacticode.Test.demoJSON = function (){
 	console.log("demoJSON");
 	
 	var fight = Tacticode.Test.getJSON("test/fight.json");
 	
-	var map = new Tacticode.Map();
-	map.loadFromName(fight.map, function () {
-		Tacticode.stage.addChildAt(map.container, 0);
+	Tacticode.loadMap(fight.map, function () {
+		Tacticode.animateTest = function* () {
+			console.log("map loaded");
+			
+			Tacticode.entities.loadEntities(fight.entities, Tacticode.map);
+			
+			for (var a of fight.actions){
+				yield* Tacticode.entities.animateAction(a);
+			}
+			
+			console.log("end demo");
+		}();
 	});
-	
-	yield* Tacticode.Test.wait(0.1);
-	
-	Tacticode.entities.loadEntities(fight.entities, map);
-	
-	for (var a of fight.actions){
-		yield* Tacticode.entities.animateAction(a);
-	}
-	
-	console.log("end demo");
 }
 
 Tacticode.Test.wait = function* (time){

@@ -5,6 +5,7 @@ Tacticode.Map = function () {
     this.background = null;
     this.cells = null;
     this.container = null;
+	this.onCellSelected = null;
 };
 
 Tacticode.Map.MAP_PATH = 'script/maps/';
@@ -84,7 +85,9 @@ Tacticode.Map.prototype._initEvents = function () {
 			cell = root.getCell(mappos[0], mappos[1], z);
 			z -= 1;
 		}
-		z += 1;
+		if (cell === oldCell) {
+			return;
+		}
 		if (oldCell) {
 			oldCell.sprite.tint = 0xFFFFFF;
 			for (var i = 0; i < oldCell.subSprites.length; ++i) {
@@ -101,10 +104,8 @@ Tacticode.Map.prototype._initEvents = function () {
 		} else {
 			oldCell = null;
 		}
-		if (cell) {
-			Tacticode.coordinatesText.setText('cell: (' + mappos[0] + ',' + mappos[1] + ') height: ' + z + '\naccessible: ' + cell.accessible + '\nline-of-sight: ' + cell.los);
-		} else {
-			Tacticode.coordinatesText.setText('');
+		if (root.onCellSelected) {
+			root.onCellSelected(cell);
 		}
 	});
 };
