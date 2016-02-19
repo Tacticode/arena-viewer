@@ -20,7 +20,7 @@ Tacticode.Entity = function(entity, animator) {
 }
 
 Tacticode.Entity.prototype.updateSpritePos = function() {
-	var coords = this.animator.map._mapToProjection(this.x, this.y, this.z);
+	var coords = Tacticode.Map.mapToProjection(this.x, this.y, this.z);
     this.sprite.x = coords[0] + Tacticode.GAME_WIDTH / 2;
     this.sprite.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
 	
@@ -115,8 +115,8 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	else if (action.type == "skill"){
 		console.log(action.skill);
 		
-		var startCoords = this.map._mapToProjection(startX, startY, startZ);
-		var endCoords = this.map._mapToProjection(endX, endY, endZ);
+		var startCoords = Tacticode.Map.mapToProjection(startX, startY, startZ);
+		var endCoords = Tacticode.Map.mapToProjection(endX, endY, endZ);
 		
 		Tacticode.projectiles.addString(
 		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
