@@ -15,6 +15,8 @@ Tacticode.init = function () {
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.demo = Tacticode.Test.demoJSON();
+	Tacticode.coordinatesText = new Tacticode.ShadowText(8, 8, '20px Arial', 0xEEEEEE, 0x000000);
+	Tacticode.stage.addChild(Tacticode.coordinatesText.container);
 	document.body.appendChild(Tacticode.renderer.view);
 
     requestAnimationFrame(Tacticode.animate);

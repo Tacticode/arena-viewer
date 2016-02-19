@@ -31,7 +31,7 @@ Tacticode.Test.demoJSON = function* (){
 	
 	var map = new Tacticode.Map();
 	map.loadFromName(fight.map, function () {
-		Tacticode.stage.addChild(map.container);
+		Tacticode.stage.addChildAt(map.container, 0);
 	});
 	
 	yield* Tacticode.Test.wait(0.1);

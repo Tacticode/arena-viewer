@@ -81,17 +81,23 @@ Tacticode.Map.prototype._initEvents = function () {
 		var cell = null;
 		var z = 10;
 		while (cell == null && z >= 0) {
-			cell = root.getCell(mappos[0] + z, mappos[1] + z, z);
+			cell = root.getCell(mappos[0], mappos[1], z);
 			z -= 1;
 		}
+		z += 1;
 		if (oldCell) {
-			oldCell.sprite.tint += 0xFFFF;
+			oldCell.sprite.tint = 0xFFFFFF;
 		}
 		if (cell) {
-			cell.sprite.tint -= 0xFFFF;
+			cell.sprite.tint = cell.accessible ? 0x50FF50 : 0xFF5050;
 			oldCell = cell;
 		} else {
 			oldCell = null;
+		}
+		if (cell) {
+			Tacticode.coordinatesText.setText('cell: (' + mappos[0] + ',' + mappos[1] + ') height: ' + z + '\naccessible: ' + cell.accessible + '\nline-of-sight: ' + cell.los);
+		} else {
+			Tacticode.coordinatesText.setText('');
 		}
 	});
 };
