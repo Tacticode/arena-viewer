@@ -96,13 +96,15 @@ Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPositio
 	var projectile = new Tacticode.Projectile(startPosition, endPosition, type, this);
 	this.projectiles.push(projectile);
 	this.container.addChild(projectile.sprite);
+	return projectile.nbFrames;
 }
 
-Tacticode.ProjectilesAnimator.prototype.addString = function(startPosition, endPosition, typeStr) {
+Tacticode.ProjectilesAnimator.prototype.addWithString = function(startPosition, endPosition, typeStr) {
 	var type = null;
 	for (t in Tacticode.Projectile.Type)
 		if (Tacticode.Projectile.Type[t].name == typeStr)
 			type = Tacticode.Projectile.Type[t];
 	if (type)
-		this.add(startPosition, endPosition, type);
+		return this.add(startPosition, endPosition, type);
+	return 0;
 }

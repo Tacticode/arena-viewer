@@ -50,6 +50,11 @@ Tacticode.Test.wait = function* (time){
 		yield null;
 }
 
+Tacticode.Test.waitFrames = function* (nbFrames){
+	while (--nbFrames >= 0)
+		yield null;
+}
+
 Tacticode.Test.getJSON = function(path){
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET", path, false);

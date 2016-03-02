@@ -113,15 +113,15 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		}
 	}
 	else if (action.type == "skill"){
-		console.log(action.skill);
+		// console.log(action.skill);
 		
 		var startCoords = Tacticode.Map.mapToProjection(startX, startY, startZ);
 		var endCoords = Tacticode.Map.mapToProjection(endX, endY, endZ);
 		
-		Tacticode.projectiles.addString(
+		var nbFrames = Tacticode.projectiles.addWithString(
 		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		{x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		action.skill);
-		yield* Tacticode.Test.wait(0.5);
+		yield* Tacticode.Test.waitFrames(nbFrames);
 	}
 }
