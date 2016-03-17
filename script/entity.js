@@ -122,6 +122,6 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		{x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		action.skill);
-		yield* Tacticode.Test.waitFrames(nbFrames);
+		yield* Tacticode.Fight.waitFrames(nbFrames);
 	}
 }

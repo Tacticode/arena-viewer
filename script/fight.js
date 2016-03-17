@@ -1,7 +1,7 @@
-Tacticode.Test = {};
+Tacticode.Fight = {};
 
-Tacticode.Test.demo = function* (){
-	yield* Tacticode.Test.wait(0.1);
+Tacticode.Fight.demo = function* (){
+	yield* Tacticode.Fight.wait(0.1);
 	var c1 = Tacticode.stage.addChild(new PIXI.Sprite.fromImage("assets/test/character_dl.png"));
 	var c2 = Tacticode.stage.addChild(new PIXI.Sprite.fromImage("assets/test/character_ur.png"));
 	c1.x = 480;
@@ -17,17 +17,17 @@ Tacticode.Test.demo = function* (){
 	var pos2 = {x:c2.x, y:c2.y};
 	
 	while (true){
-		yield* Tacticode.Test.wait(1);
+		yield* Tacticode.Fight.wait(1);
 		Tacticode.projectiles.add(pos1, pos2, Tacticode.Projectile.Type.Fire);
-		yield* Tacticode.Test.wait(1);
+		yield* Tacticode.Fight.wait(1);
 		Tacticode.projectiles.add(pos2, pos1, Tacticode.Projectile.Type.Ice);
 	}
 }
 
-Tacticode.Test.demoJSON = function (){
+Tacticode.Fight.demoJSON = function (){
 	console.log("demoJSON");
 	
-	var fight = Tacticode.Test.getJSON("test/fight.json");
+	var fight = Tacticode.Fight.getJSON("test/fight.json");
 	
 	Tacticode.loadMap(fight.map, function () {
 		Tacticode.animateTest = function* () {
@@ -44,18 +44,18 @@ Tacticode.Test.demoJSON = function (){
 	});
 }
 
-Tacticode.Test.wait = function* (time){
+Tacticode.Fight.wait = function* (time){
 	var nbFrames = 60 * time;
 	while (--nbFrames >= 0)
 		yield null;
 }
 
-Tacticode.Test.waitFrames = function* (nbFrames){
+Tacticode.Fight.waitFrames = function* (nbFrames){
 	while (--nbFrames >= 0)
 		yield null;
 }
 
-Tacticode.Test.getJSON = function(path){
+Tacticode.Fight.getJSON = function(path){
 	xmlhttp = new XMLHttpRequest();
 	xmlhttp.open("GET", path, false);
 	xmlhttp.send();

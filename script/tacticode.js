@@ -25,7 +25,7 @@ Tacticode.init = function () {
 	Tacticode.stage.addChild(Tacticode.coordinatesText.container);
 	document.body.appendChild(Tacticode.renderer.view);
 
-	Tacticode.Test.demoJSON();
+	Tacticode.Fight.demoJSON();
 	
     requestAnimationFrame(Tacticode._animate);
 };
