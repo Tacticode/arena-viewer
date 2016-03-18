@@ -43,7 +43,7 @@ Tacticode.Fight.next = function(){
 }
 
 Tacticode.Fight.prev = function(){
-	console.log("prev");
+	Tacticode.Fight.undoAction = true;
 }
 
 Tacticode.Fight.buttonMouseOver = function(sprite){
@@ -64,6 +64,7 @@ Tacticode.Fight.initButtons = function(){
 	Tacticode.Fight.isPlaying = true;
 	Tacticode.Fight.currentAction = 0;
 	Tacticode.Fight.skipCurrent = false;
+	Tacticode.Fight.undoAction = false;
 	
 	Tacticode.Fight.stopButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/stop.png"));
 	Tacticode.Fight.pauseButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/pause.png"));
@@ -113,13 +114,20 @@ Tacticode.Fight.demoJSON = function (){
 				do {
 					while (!Tacticode.Fight.isPlaying)
 						yield null;
+					if (Tacticode.Fight.undoAction)
+						break;
 					if (!Tacticode.Fight.skipCurrent)
 						yield null;
 					else
 						Tacticode.projectiles.clear();
 				} while (!animation.next().done)
 				Tacticode.Fight.skipCurrent = false;
-				if (++Tacticode.Fight.currentAction >= fight.actions.length){
+				if (Tacticode.Fight.undoAction){
+					if (Tacticode.Fight.currentAction > 0)
+						--Tacticode.Fight.currentAction;
+					Tacticode.Fight.undoAction = false;
+				}
+				else if (++Tacticode.Fight.currentAction >= fight.actions.length){
 					Tacticode.Fight.currentAction = 0;
 					Tacticode.Fight.pause();
 				}
