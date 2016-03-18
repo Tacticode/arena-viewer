@@ -33,17 +33,15 @@ Tacticode.Fight.pause = function(){
 }
 
 Tacticode.Fight.stop = function(){
-	if (Tacticode.Fight.isPlaying)
-		Tacticode.Fight.pause();
-	Tacticode.projectiles.clear();
+	Tacticode.Fight.stopPressed = true;
 }
 
 Tacticode.Fight.next = function(){
-	Tacticode.Fight.skipCurrent = true;
+	Tacticode.Fight.skipPressed = true;
 }
 
 Tacticode.Fight.prev = function(){
-	Tacticode.Fight.undoAction = true;
+	Tacticode.Fight.undoPressed = true;
 }
 
 Tacticode.Fight.buttonMouseOver = function(sprite){
@@ -63,8 +61,10 @@ Tacticode.Fight.buttonMouseOut = function(sprite){
 Tacticode.Fight.initButtons = function(){
 	Tacticode.Fight.isPlaying = true;
 	Tacticode.Fight.currentAction = 0;
-	Tacticode.Fight.skipCurrent = false;
-	Tacticode.Fight.undoAction = false;
+	Tacticode.Fight.skipPressed = false;
+	Tacticode.Fight.undoPressed = false;
+	Tacticode.Fight.stopPressed = false;
+	Tacticode.Fight.undoData = [];
 	
 	Tacticode.Fight.stopButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/stop.png"));
 	Tacticode.Fight.pauseButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/pause.png"));
@@ -108,43 +108,53 @@ Tacticode.Fight.demoJSON = function (){
 			Tacticode.entities.loadEntities(fight.entities, Tacticode.map);
 			Tacticode.Fight.initButtons();
 			
+			// fight animation loop
 			while (true){
+				// saving entity information to go back in the animation
+				if (Tacticode.Fight.currentAction == Tacticode.Fight.undoData.length)
+					Tacticode.Fight.undoData.push(Tacticode.entities.backupEntity(fight.actions[Tacticode.Fight.currentAction]));
 				var animation = Tacticode.entities.animateAction(fight.actions[Tacticode.Fight.currentAction]);
-				// undo data
-				do {
-					while (!Tacticode.Fight.isPlaying)
+				
+				do { // action animation loop
+					while (!Tacticode.Fight.isPlaying
+						&& !Tacticode.Fight.skipPressed
+						&& !Tacticode.Fight.undoPressed
+						&& !Tacticode.Fight.stopPressed)
 						yield null;
-					if (Tacticode.Fight.undoAction)
+					if (Tacticode.Fight.undoPressed || Tacticode.Fight.stopPressed)
 						break;
-					if (!Tacticode.Fight.skipCurrent)
+					if (!Tacticode.Fight.skipPressed)
 						yield null;
-					else
-						Tacticode.projectiles.clear();
-				} while (!animation.next().done)
-				Tacticode.Fight.skipCurrent = false;
-				if (Tacticode.Fight.undoAction){
+				} while (!animation.next().done);
+				if (Tacticode.Fight.skipPressed){ // next button pressed
+					if (Tacticode.Fight.currentAction < fight.actions.length - 1)
+						++Tacticode.Fight.currentAction;
+					Tacticode.Fight.skipPressed = false;
+					Tacticode.projectiles.clear();
+				}
+				else if (Tacticode.Fight.undoPressed){ // undo button pressed
+					Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[Tacticode.Fight.currentAction]);
 					if (Tacticode.Fight.currentAction > 0)
-						--Tacticode.Fight.currentAction;
-					Tacticode.Fight.undoAction = false;
+						Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
+					Tacticode.Fight.undoPressed = false;
+					Tacticode.projectiles.clear();
 				}
-				else if (++Tacticode.Fight.currentAction >= fight.actions.length){
+				else if (Tacticode.Fight.stopPressed){ // stop button pressed
+					while (Tacticode.Fight.currentAction >= 0)
+						Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[Tacticode.Fight.currentAction--]);
 					Tacticode.Fight.currentAction = 0;
-					Tacticode.Fight.pause();
+					if (Tacticode.Fight.isPlaying)
+						Tacticode.Fight.pause();
+					Tacticode.Fight.stopPressed = false;
+					Tacticode.projectiles.clear();
 				}
-				// console.log(Tacticode.Fight.currentAction);
+				else{
+					if (Tacticode.Fight.currentAction < fight.actions.length - 1)
+						++Tacticode.Fight.currentAction;
+					else if (Tacticode.Fight.isPlaying)
+						Tacticode.Fight.pause();
+				}
 			}
-			
-			/*var actions = [];
-			
-			for (var a of fight.actions)
-				actions.push(a);
-			
-			for (var a of actions){
-				while (!Tacticode.Fight.isPlaying)
-					yield null;
-				var animation = Tacticode.entities.animateAction(a);
-				yield* animation();
-			}*/
 			
 			console.log("end demo");
 		}();

@@ -124,6 +124,27 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	}
 }
 
-Tacticode.EntityAnimator.prototype.updatedSprite = function(action){
-	return this.entities[action.entity];
+Tacticode.EntityAnimator.prototype.backupEntity = function(action){
+	var entity = this.entities[action.entity];
+	var sprite = entity.sprite;
+	return {
+		entity:entity,
+		x:entity.x,
+		y:entity.y,
+		z:entity.z,
+		texture:sprite.texture,
+		pixelX:sprite.x,
+		pixelY:sprite.y
+	};
+}
+
+Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
+	var entity = backup.entity;
+	var sprite = entity.sprite;
+	entity.x = backup.x;
+	entity.y = backup.y;
+	entity.z = backup.z;
+	sprite.texture = backup.texture;
+	sprite.x = backup.pixelX;
+	sprite.y = backup.pixelY;
 }
