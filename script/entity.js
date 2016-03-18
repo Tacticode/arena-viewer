@@ -113,8 +113,6 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		}
 	}
 	else if (action.type == "skill"){
-		// console.log(action.skill);
-		
 		var startCoords = Tacticode.Map.mapToProjection(startX, startY, startZ);
 		var endCoords = Tacticode.Map.mapToProjection(endX, endY, endZ);
 		
@@ -124,4 +122,8 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		action.skill);
 		yield* Tacticode.Fight.waitFrames(nbFrames);
 	}
+}
+
+Tacticode.EntityAnimator.prototype.updatedSprite = function(action){
+	return this.entities[action.entity];
 }

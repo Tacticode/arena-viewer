@@ -33,11 +33,13 @@ Tacticode.Fight.pause = function(){
 }
 
 Tacticode.Fight.stop = function(){
+	if (Tacticode.Fight.isPlaying)
+		Tacticode.Fight.pause();
 	Tacticode.projectiles.clear();
 }
 
 Tacticode.Fight.next = function(){
-	console.log("next");
+	Tacticode.Fight.skipCurrent = true;
 }
 
 Tacticode.Fight.prev = function(){
@@ -60,6 +62,8 @@ Tacticode.Fight.buttonMouseOut = function(sprite){
 
 Tacticode.Fight.initButtons = function(){
 	Tacticode.Fight.isPlaying = true;
+	Tacticode.Fight.currentAction = 0;
+	Tacticode.Fight.skipCurrent = false;
 	
 	Tacticode.Fight.stopButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/stop.png"));
 	Tacticode.Fight.pauseButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/pause.png"));
@@ -83,7 +87,6 @@ Tacticode.Fight.initButtons = function(){
 		b.scale.x = 0.9;
 		b.scale.y = 0.9;
 		b.rotation = rotations[i];
-		console.log(b.width);
 		b.x = Tacticode.GAME_WIDTH - positions[i];
 		b.y = Tacticode.GAME_HEIGHT - 17;
 		b.on("mousedown", actions[i])
@@ -104,11 +107,36 @@ Tacticode.Fight.demoJSON = function (){
 			Tacticode.entities.loadEntities(fight.entities, Tacticode.map);
 			Tacticode.Fight.initButtons();
 			
-			for (var a of fight.actions){
+			while (true){
+				var animation = Tacticode.entities.animateAction(fight.actions[Tacticode.Fight.currentAction]);
+				// undo data
+				do {
+					while (!Tacticode.Fight.isPlaying)
+						yield null;
+					if (!Tacticode.Fight.skipCurrent)
+						yield null;
+					else
+						Tacticode.projectiles.clear();
+				} while (!animation.next().done)
+				Tacticode.Fight.skipCurrent = false;
+				if (++Tacticode.Fight.currentAction >= fight.actions.length){
+					Tacticode.Fight.currentAction = 0;
+					Tacticode.Fight.pause();
+				}
+				// console.log(Tacticode.Fight.currentAction);
+			}
+			
+			/*var actions = [];
+			
+			for (var a of fight.actions)
+				actions.push(a);
+			
+			for (var a of actions){
 				while (!Tacticode.Fight.isPlaying)
 					yield null;
-				yield* Tacticode.entities.animateAction(a);
-			}
+				var animation = Tacticode.entities.animateAction(a);
+				yield* animation();
+			}*/
 			
 			console.log("end demo");
 		}();
