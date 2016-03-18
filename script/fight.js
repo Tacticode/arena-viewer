@@ -24,6 +24,74 @@ Tacticode.Fight.demo = function* (){
 	}
 }
 
+Tacticode.Fight.pause = function(){
+	if (Tacticode.Fight.isPlaying)
+		Tacticode.Fight.pauseButton.texture = PIXI.Texture.fromImage("assets/sprites/buttons/play.png");
+	else
+		Tacticode.Fight.pauseButton.texture = PIXI.Texture.fromImage("assets/sprites/buttons/pause.png");
+	Tacticode.Fight.isPlaying = !Tacticode.Fight.isPlaying;
+}
+
+Tacticode.Fight.stop = function(){
+	Tacticode.projectiles.clear();
+}
+
+Tacticode.Fight.next = function(){
+	console.log("next");
+}
+
+Tacticode.Fight.prev = function(){
+	console.log("prev");
+}
+
+Tacticode.Fight.buttonMouseOver = function(sprite){
+	return function(){
+		sprite.scale.x = 1;
+		sprite.scale.y = 1;
+	}
+}
+
+Tacticode.Fight.buttonMouseOut = function(sprite){
+	return function(){
+		sprite.scale.x = 0.9;
+		sprite.scale.y = 0.9;
+	}
+}
+
+Tacticode.Fight.initButtons = function(){
+	Tacticode.Fight.isPlaying = true;
+	
+	Tacticode.Fight.stopButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/stop.png"));
+	Tacticode.Fight.pauseButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/pause.png"));
+	Tacticode.Fight.nextButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/next.png"));
+	Tacticode.Fight.prevButton = new PIXI.Sprite(PIXI.Texture.fromImage("assets/sprites/buttons/next.png"));
+	
+	var buttons = [Tacticode.Fight.nextButton, Tacticode.Fight.pauseButton,
+		Tacticode.Fight.stopButton, Tacticode.Fight.prevButton];
+	var positions = [16, 48, 80, 112];
+	var rotations = [0, 0, 0, Math.PI];
+	var actions = [Tacticode.Fight.next, Tacticode.Fight.pause,
+		Tacticode.Fight.stop, Tacticode.Fight.prev];
+	var x = Tacticode.GAME_WIDTH;
+	for (var i = 0; i < buttons.length; i++){
+		var b = buttons[i];
+		b.buttonMode = true;
+		b.interactive = true;
+		Tacticode.stage.addChild(b);
+		b.anchor.x = 0.5;
+		b.anchor.y = 0.5;
+		b.scale.x = 0.9;
+		b.scale.y = 0.9;
+		b.rotation = rotations[i];
+		console.log(b.width);
+		b.x = Tacticode.GAME_WIDTH - positions[i];
+		b.y = Tacticode.GAME_HEIGHT - 17;
+		b.on("mousedown", actions[i])
+		.on("mouseover", Tacticode.Fight.buttonMouseOver(b))
+		.on("mouseout", Tacticode.Fight.buttonMouseOut(b));
+	}
+}
+
 Tacticode.Fight.demoJSON = function (){
 	console.log("demoJSON");
 	
@@ -34,8 +102,11 @@ Tacticode.Fight.demoJSON = function (){
 			console.log("map loaded");
 			
 			Tacticode.entities.loadEntities(fight.entities, Tacticode.map);
+			Tacticode.Fight.initButtons();
 			
 			for (var a of fight.actions){
+				while (!Tacticode.Fight.isPlaying)
+					yield null;
 				yield* Tacticode.entities.animateAction(a);
 			}
 			

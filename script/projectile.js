@@ -82,12 +82,20 @@ Tacticode.ProjectilesAnimator.checkDelete = function(p) {
 }
 
 Tacticode.ProjectilesAnimator.prototype.animate = function() {
+	if (!Tacticode.Fight.isPlaying)
+		return;
 	for (var p of this.projectiles) {
 		p.update();
 		if (p.currentFrame > p.nbFrames)
 			this.container.removeChild(p.sprite);
 	}
 	this.projectiles = this.projectiles.filter(Tacticode.ProjectilesAnimator.checkDelete); // TODO optimisation ?
+}
+
+Tacticode.ProjectilesAnimator.prototype.clear = function() {
+	for (var p of this.projectiles)
+		this.container.removeChild(p.sprite);
+	this.projectiles = [];
 }
 
 Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPosition, type) {
