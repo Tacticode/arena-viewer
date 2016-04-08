@@ -104,7 +104,7 @@ Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPositio
 	var projectile = new Tacticode.Projectile(startPosition, endPosition, type, this);
 	this.projectiles.push(projectile);
 	this.container.addChild(projectile.sprite);
-	return projectile.nbFrames;
+	return projectile.nbFrames + 1;
 }
 
 Tacticode.ProjectilesAnimator.prototype.addWithString = function(startPosition, endPosition, typeStr) {
