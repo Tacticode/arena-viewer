@@ -53,8 +53,8 @@ Tacticode.loadMap = function (mapName, callback) {
  */
 Tacticode.update = function () {
 	Tacticode.projectiles.animate();
-	if (Tacticode.animateTest) {
-		Tacticode.animateTest.next();
+	if (Tacticode.animateFight) {
+		Tacticode.animateFight.next();
 	}
 };
 
