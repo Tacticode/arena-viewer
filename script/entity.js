@@ -9,6 +9,9 @@ Tacticode.Entity = function(entity, animator) {
 			this.breed = Tacticode.Entity.Breed[b];
 			break;
 		}
+	
+	Tacticode.CustomTexture.test(this); // test
+	
 	this.team = entity.team;
 	this.textures = this.breed.defaultTextures;
 	this.sprite = new PIXI.Sprite(this.textures.dl);

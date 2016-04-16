@@ -122,7 +122,7 @@ Tacticode.Fight.mainLoop = function* (){
 				yield null;
 		} while (!animation.next().done);
 		if (Tacticode.Fight.skipPressed){ // next button pressed
-			if (Tacticode.Fight.currentAction < fight.actions.length - 1)
+			if (Tacticode.Fight.currentAction < data.actions.length - 1)
 				++Tacticode.Fight.currentAction;
 			Tacticode.Fight.skipPressed = false;
 			Tacticode.projectiles.clear();
