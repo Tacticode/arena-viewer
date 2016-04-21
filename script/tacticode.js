@@ -25,9 +25,15 @@ Tacticode.init = function () {
 	Tacticode.stage.addChild(Tacticode.coordinatesText.container);
 	document.body.appendChild(Tacticode.renderer.view);
 
-	Tacticode.Fight.demoJSON();
-	
     requestAnimationFrame(Tacticode._animate);
+};
+
+/**
+ * Play the requested fight by loading the correct map, the entities
+ * and playing every animation step by step.
+ */
+Tacticode.loadFight = function (data) {
+	Tacticode.Fight.play(data);
 };
 
 /**

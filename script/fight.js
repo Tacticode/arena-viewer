@@ -152,17 +152,14 @@ Tacticode.Fight.mainLoop = function* (){
 	}
 }
 
-Tacticode.Fight.demoJSON = function (){
-	console.log("demoJSON");
-	
-	Tacticode.Fight.getJSON("test/fight.json", function () {
-		Tacticode.loadMap(Tacticode.Fight.fightData.map, function () {
-			Tacticode.entities.loadEntities(Tacticode.Fight.fightData.entities, Tacticode.map, function() {
-				Tacticode.animateFight = function* () {
-					Tacticode.Fight.initButtons();
-					yield* Tacticode.Fight.mainLoop();
-				}();
-			});
+Tacticode.Fight.play = function (data) {
+	Tacticode.Fight.fightData = data;
+	Tacticode.loadMap(Tacticode.Fight.fightData.map, function () {
+		Tacticode.entities.loadEntities(Tacticode.Fight.fightData.entities, Tacticode.map, function() {
+			Tacticode.animateFight = function* () {
+				Tacticode.Fight.initButtons();
+				yield* Tacticode.Fight.mainLoop();
+			}();
 		});
 	});
 }
@@ -176,14 +173,4 @@ Tacticode.Fight.wait = function* (time){
 Tacticode.Fight.waitFrames = function* (nbFrames){
 	while (--nbFrames >= 0)
 		yield null;
-}
-
-Tacticode.Fight.getJSON = function(url, callback){
-	jQuery.getJSON(url, function (data) {
-		console.log(url + " loaded");
-		Tacticode.Fight.fightData = data;
-		callback();
-	}).fail(function (data, err, text) {
-		console.error('Cannot load fight ' + url + ':', err, text);
-	});
 }
