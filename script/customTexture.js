@@ -41,18 +41,20 @@ Tacticode.CustomTexture.prototype.addPart = function(part, frame, tint = 0xFFFFF
 	var directionNames = ["sw", "se", "nw", "ne"];
 	var file = part.path;
 	var mirrored = false;
+	var types = Tacticode.CustomTexture.CharacterPart.types;
 	
-	if (part.type & Tacticode.CustomTexture.CharacterPart.type.FRONT_ONLY && direction > 1)
+	if ((part.type & types.FRONT_ONLY && direction > 1)
+		|| (part.type & types.BACK_ONLY && direction < 2)
+		|| (part.type & types.NO_STAND && animation == 0)
+		|| (part.type & types.NO_ATTACK && animation == 1))
 		return this;
-	if (part.type & Tacticode.CustomTexture.CharacterPart.type.BACK_ONLY && direction < 2)
-		return this;
-	if (part.type & Tacticode.CustomTexture.CharacterPart.type.IS_MIRRORED
+	if (part.type & types.IS_MIRRORED
 		&& (direction == 1 || direction == 3)){
 			mirrored = true;
 			direction -= 1;
 		}
-	if (!(part.type & Tacticode.CustomTexture.CharacterPart.type.SINGLE_IMAGE)){
-		if (!(part.type & Tacticode.CustomTexture.CharacterPart.type.NO_ANIM))
+	if (!(part.type & types.SINGLE_IMAGE)){
+		if (!(part.type & types.NO_ANIM))
 			file += "_" + animationNames[animation];
 		file += "_" + directionNames[direction];
 	}
@@ -103,46 +105,103 @@ Tacticode.CustomTexture.CharacterPart = function(path, type, scale = 3/4){
 	this.scale = scale;
 }
 
-Tacticode.CustomTexture.CharacterPart.type = {
-	IS_MIRRORED: 1, // nw and sw images are mirrored to make the ne and se images
-	SINGLE_IMAGE: 2, // all directions and animations are made from 1 image
-	FRONT_ONLY: 4, // visible only when the character is looking s
-	BACK_ONLY: 8, // visible only when the character is looking n
-	NO_ANIM: 16
-}
-
-Tacticode.CustomTexture.CharacterPart.parts = {
-	body1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/body1",
-		Tacticode.CustomTexture.CharacterPart.type.IS_MIRRORED),
-	armor1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/armor1",
-		Tacticode.CustomTexture.CharacterPart.type.IS_MIRRORED
-		| Tacticode.CustomTexture.CharacterPart.type.NO_ANIM),
-	hat1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/hat1",
-		Tacticode.CustomTexture.CharacterPart.type.SINGLE_IMAGE)/*,
-	sword1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/sword1",
-		Tacticode.CustomTexture.CharacterPart.type.IS_MIRRORED)*/
+{
+	Tacticode.CustomTexture.CharacterPart.types = {
+		IS_MIRRORED: 1, // nw and sw images are mirrored to make the ne and se images
+		SINGLE_IMAGE: 2, // all directions and animations are made from 1 image
+		FRONT_ONLY: 4, // visible only when the character is looking s
+		BACK_ONLY: 8, // visible only when the character is looking n
+		NO_ANIM: 16, // use same image for all animations
+		NO_STAND: 32, // part ignored in stand frames
+		NO_ATTACK: 64 // part ignored in attack frames
+	}
+	
+	let types = Tacticode.CustomTexture.CharacterPart.types;
+	// types.NO_ANIM = types.NO_STAND + types.NO_ATTACK;
+	
+	Tacticode.CustomTexture.CharacterPart.parts = {
+		body1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/body1",
+			types.IS_MIRRORED),
+		eyes1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/eyes1",
+			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
+		face1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/face1",
+			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
+		face2: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/face2",
+			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
+		hair1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/hair1",
+			types.IS_MIRRORED | types.NO_ANIM),
+		clothes1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/clothes1",
+			types.IS_MIRRORED | types.NO_ANIM),
+		clothes2: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/clothes2",
+			types.IS_MIRRORED | types.NO_ANIM),
+		armor1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/armor1",
+			types.IS_MIRRORED | types.NO_ANIM),
+		armor2: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/armor2",
+			types.IS_MIRRORED | types.NO_ANIM),
+		boots1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/boots1",
+			types.IS_MIRRORED | types.NO_ANIM),
+		hat1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/hat1",
+			types.SINGLE_IMAGE),
+		sword1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/sword1",
+			types.IS_MIRRORED)
+	}
 }
 
 Tacticode.CustomTexture.test = function(entity){
 	var textures = [];
-	var colors = [0x3bbf40, 0xf8e887, 0xaa7a08, 0x6a4c06, 0x908b7f, 0xd7d379, 0x5eabe4];
-	var skin = colors[Math.floor(Math.random() * colors.length)];
-	var armorTint =  Math.floor((Math.random() * 0xFFFFFF));
+	var skin;
+	var parts = Tacticode.CustomTexture.CharacterPart.parts;
+	var eyesColor = Math.floor((Math.random() * 0x1000000));
+	var hairColor = Math.floor((Math.random() * 0x1000000));
+	var armorColors = [0xb0a090, 0x606050, 0x806000, 0xffd700];
+	var armorColor =  armorColors[Math.floor(Math.random() * armorColors.length)];
+	var bootColors = [0x704010, 0x403030, 0x908080];
+	var bootColor = bootColors[Math.floor(Math.random() * bootColors.length)];
+	var face;
+	var armor = Math.random() < 0.5 ? parts.armor1 : parts.armor2;
+	var clothes = [];
+	
+	if (entity.breed == Tacticode.Entity.Breed.Orc){
+		let colors = [0x20d030, 0x209020, 0x70b020, 0x3090d0];
+		skin = colors[Math.floor(Math.random() * colors.length)];
+		face = parts.face2;
+		if (Math.random() < 0.5){
+			armor = false;
+			clothes.push({t:parts.clothes1, c:Math.floor((Math.random() * 0x1000000))});
+			if (Math.random() < 0.5)
+				clothes.push({t:parts.clothes2, c:Math.floor((Math.random() * 0x1000000))});
+		}
+	}
+	else{
+		let colors = [0xf0e0b0, 0xf0e0c0, 0xf8e887, 0xaa7a08, 0x6a4c06, 0xd7d379];
+		skin = colors[Math.floor(Math.random() * colors.length)];
+		face = parts.face1;
+		if (Math.random() < 0.5)
+			clothes.push({t:parts.clothes1, c:Math.floor((Math.random() * 0x1000000))});
+	}
 	
 	var f = 0;
-	var gen = function(texture){
+	var gen1 = function(gen2){
+		// console.log("gen1");
+		var tmp = new Tacticode.CustomTexture(frame = f)
+			.addPart(parts.body1, f, skin)
+			.addPart(parts.eyes1, f, eyesColor)
+			.addPart(face, f)
+			.addPart(parts.hair1, f, hairColor);
+		for (var c of clothes)
+			tmp.addPart(c.t, f, c.c);
+		if (armor)
+			tmp.addPart(armor, f, armorColor);
+		tmp.addPart(parts.boots1, f, bootColor)
+			.addPart(parts.sword1, f)
+			//.addPart(parts.hat1, f)
+			.generate(gen2);
+	}
+	var gen2 = function(texture){
+		// console.log("gen2"+f);
 		textures[f] = texture;
-		/*var sprite = new PIXI.Sprite(texture);
-		Tacticode.stage.addChild(sprite);
-		sprite.x += 100 * f;*/
-		// console.log("frame " + f + " loaded");
-		if (f++ < 7){
-			var tex = new Tacticode.CustomTexture(frame = f)
-			.addPart(Tacticode.CustomTexture.CharacterPart.parts.body1, f, skin)
-			.addPart(Tacticode.CustomTexture.CharacterPart.parts.armor1, f, armorTint)
-			.addPart(Tacticode.CustomTexture.CharacterPart.parts.hat1, f)
-			.generate(gen);
-		}
+		if (f++ < 7)
+			gen1(gen2);
 		else if (entity){
 			entity.textures = {
 				ul: textures[2],
@@ -153,13 +212,8 @@ Tacticode.CustomTexture.test = function(entity){
 		}
 	}
 	
-	var tex = new Tacticode.CustomTexture(frame = f)
-	.addPart(Tacticode.CustomTexture.CharacterPart.parts.body1, f, skin)
-	.addPart(Tacticode.CustomTexture.CharacterPart.parts.armor1, f, armorTint)
-	.addPart(Tacticode.CustomTexture.CharacterPart.parts.hat1, f)
-	.generate(gen);
+	gen1(gen2);
 }
-Tacticode.CustomTexture.test();
 
 /*
 var test = new Tacticode.CustomTexture();
