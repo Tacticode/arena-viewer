@@ -16,14 +16,14 @@ var Tacticode = {
  * Initializes the tacticode viewer.
  * Creates all the graphical elements and starts the battle.
  */
-Tacticode.init = function () {
+Tacticode.init = function (parent) {
 	Tacticode.stage = new PIXI.Container();
 	Tacticode.renderer = new PIXI.autoDetectRenderer(Tacticode.GAME_WIDTH, Tacticode.GAME_HEIGHT);
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.coordinatesText = new Tacticode.ShadowText(8, 8, '20px Arial', 0xEEEEEE, 0x000000);
 	Tacticode.stage.addChild(Tacticode.coordinatesText.container);
-	document.body.appendChild(Tacticode.renderer.view);
+	document.getElementById(parent).appendChild(Tacticode.renderer.view);
 
     requestAnimationFrame(Tacticode._animate);
 };
