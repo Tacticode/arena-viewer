@@ -1,8 +1,20 @@
-Tacticode.Entity = function(entity, animator) {
+/*
+textures:
+	0:sw
+	1:se
+	2:nw
+	3:ne
+	4:attack sw
+	5:attack se
+	6:attack nw
+	7:attack ne
+*/
+
+Tacticode.Entity = function(entity, animator, callback) {
 	this.id = entity.id;
 	this.x = entity.x;
 	this.y = entity.y;
-	this.z = entity.z || 1;
+	this.z = (typeof entity.z === "undefined") ? 1 : entity.z;
 	this.breed = null;
 	for (var b in Tacticode.Entity.Breed)
 		if (entity.breed == Tacticode.Entity.Breed[b].name){
@@ -10,16 +22,20 @@ Tacticode.Entity = function(entity, animator) {
 			break;
 		}
 	
-	Tacticode.CustomTexture.test(this); // test
-	
 	this.team = entity.team;
-	this.textures = this.breed.defaultTextures;
-	this.sprite = new PIXI.Sprite(this.textures.dl);
-	this.sprite.anchor.x = 0.5;
-	this.sprite.anchor.y = 0.5;
-	Tacticode.stage.addChild(this.sprite);
+	var e = this;
+	// this.textures = this.breed.defaultTextures;
+	Tacticode.CustomTexture.test(this, function(textures) {
+		e.textures = textures;
+		e.textureId = 0;
+		e.sprite = new PIXI.Sprite(e.textures[0]);
+		e.sprite.anchor.x = 0.5;
+		e.sprite.anchor.y = 0.5;
+		Tacticode.stage.addChild(e.sprite);
+		e.updateSpritePos();
+		callback();
+	});
 	this.animator = animator;
-	this.updateSpritePos();
 }
 
 Tacticode.Entity.prototype.updateSpritePos = function() {
@@ -34,21 +50,24 @@ Tacticode.Entity.prototype.updateSpritePos = function() {
 Tacticode.Entity.prototype.updateSpriteDirection = function(startX, startY, endX, endY) {
 	var distX = Math.abs(endX - startX);
 	var distY = Math.abs(endY - startY);
-	if (distX >= distY){
-		if (endX > startX)
-			this.sprite.texture = this.textures.dr;
-		else if (endX < startX)
-			this.sprite.texture = this.textures.ul;
-	}
-	else{
-		if (endY > startY)
-			this.sprite.texture = this.textures.dl;
-		else if (endY < startY)
-			this.sprite.texture = this.textures.ur;
-	}
+	var id;
+	if (distX >= distY)
+		id = endX > startX ? 1 : 2;
+	else
+		id = endY > startY ? 0 : 3;
+	this.textureId = id;
+	this.sprite.texture = this.textures[id];
 }
 
-Tacticode.Entity.Textures = {
+Tacticode.Entity.prototype.updateSpriteAttack = function(attack = true){
+	if (attack)
+		this.textureId += 4;
+	else
+		this.textureId -= 4;
+	this.sprite.texture = this.textures[this.textureId];
+}
+
+/*Tacticode.Entity.Textures = {
 	Test:{name:"test",
 	ul:PIXI.Texture.fromImage("assets/test/character_ul.png"),
 	ur:PIXI.Texture.fromImage("assets/test/character_ur.png"),
@@ -64,12 +83,12 @@ Tacticode.Entity.Textures = {
 	ur:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_ur.png"),
 	dl:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_dl.png"),
 	dr:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_dr.png")}
-}
+}*/
 
 Tacticode.Entity.Breed = {
-	Human:{name:"human", defaultTextures:Tacticode.Entity.Textures.Test},
-	Orc:{name:"orc", defaultTextures:Tacticode.Entity.Textures.Orc1},
-	Elf:{name:"elf", defaultTextures:Tacticode.Entity.Textures.Elf1}
+	Human:{name:"human"},//, defaultTextures:Tacticode.Entity.Textures.Test},
+	Orc:{name:"orc"},//, defaultTextures:Tacticode.Entity.Textures.Orc1},
+	Elf:{name:"elf"}//, defaultTextures:Tacticode.Entity.Textures.Elf1}
 }
 
 Tacticode.Entity.prototype.debug = function() {
@@ -88,10 +107,17 @@ Tacticode.EntityAnimator = function(container) {
 	this.map = null;
 }
 
-Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map) {
+Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) {
 	this.map = map;
+	var loadedEntities = 0;
+	var callback = function(){
+		console.log("loadedEntities: " + (loadedEntities + 1)+ "/" + entities.length);
+		if (++loadedEntities == entities.length)
+			next();
+	}
+	
 	for (var e of entities){
-		this.entities.push(new Tacticode.Entity(e, this));
+		this.entities.push(new Tacticode.Entity(e, this, callback));
 	}
 }
 
@@ -123,7 +149,10 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		{x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4},
 		action.skill);
-		yield* Tacticode.Fight.waitFrames(nbFrames);
+		entity.updateSpriteAttack(true);
+		yield* Tacticode.Fight.waitFrames(20);
+		entity.updateSpriteAttack(false);
+		yield* Tacticode.Fight.waitFrames(nbFrames - 20);
 	}
 }
 

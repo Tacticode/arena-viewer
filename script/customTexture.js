@@ -147,7 +147,7 @@ Tacticode.CustomTexture.CharacterPart = function(path, type, scale = 3/4){
 	}
 }
 
-Tacticode.CustomTexture.test = function(entity){
+Tacticode.CustomTexture.test = function(entity, callback = None){
 	var textures = [];
 	var skin;
 	var parts = Tacticode.CustomTexture.CharacterPart.parts;
@@ -202,14 +202,8 @@ Tacticode.CustomTexture.test = function(entity){
 		textures[f] = texture;
 		if (f++ < 7)
 			gen1(gen2);
-		else if (entity){
-			entity.textures = {
-				ul: textures[2],
-				ur: textures[3],
-				dl: textures[0],
-				dr: textures[1]
-			};
-		}
+		else if (entity && callback)
+			callback(textures);
 	}
 	
 	gen1(gen2);

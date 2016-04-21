@@ -157,11 +157,12 @@ Tacticode.Fight.demoJSON = function (){
 	
 	Tacticode.Fight.getJSON("test/fight.json", function () {
 		Tacticode.loadMap(Tacticode.Fight.fightData.map, function () {
-			Tacticode.animateFight = function* () {
-				Tacticode.entities.loadEntities(Tacticode.Fight.fightData.entities, Tacticode.map);
-				Tacticode.Fight.initButtons();
-				yield* Tacticode.Fight.mainLoop();
-			}();
+			Tacticode.entities.loadEntities(Tacticode.Fight.fightData.entities, Tacticode.map, function() {
+				Tacticode.animateFight = function* () {
+					Tacticode.Fight.initButtons();
+					yield* Tacticode.Fight.mainLoop();
+				}();
+			});
 		});
 	});
 }
