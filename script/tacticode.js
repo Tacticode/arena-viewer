@@ -18,7 +18,7 @@ var Tacticode = {
  */
 Tacticode.init = function () {
 	Tacticode.stage = new PIXI.Container();
-	Tacticode.renderer = new PIXI.autoDetectRenderer(1024, 768);
+	Tacticode.renderer = new PIXI.autoDetectRenderer(Tacticode.GAME_WIDTH, Tacticode.GAME_HEIGHT);
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.coordinatesText = new Tacticode.ShadowText(8, 8, '20px Arial', 0xEEEEEE, 0x000000);
