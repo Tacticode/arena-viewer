@@ -172,7 +172,7 @@ Tacticode.Map.prototype._initEvents = function () {
 Tacticode.Map.prototype._createSprites = function () {
     this.container = new PIXI.Container();
     if (this.background) {
-        var background = new PIXI.Sprite(PIXI.Texture.fromImage("assets/textures/" + this.background));
+        var background = new PIXI.Sprite(PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "textures/" + this.background));
         this.container.addChild(background);
     }
     this.cells.sort(this._compareCells);
@@ -185,13 +185,13 @@ Tacticode.Map.prototype._createSprites = function () {
 			
 			if (cellData.z > 0) {
 				for (var z = 0; z < cellData.z; ++z) {
-					var texture = PIXI.Texture.fromImage("assets/sprites/" + this.style.tiles[cellData.tile].groundTexture);
+					var texture = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/" + this.style.tiles[cellData.tile].groundTexture);
 					var sprite = this._createSpriteAtPosition(texture, cellData.x, cellData.y, z);
 					cellData.subSprites.push(sprite);
 				}
 			}
 		
-			var texture = PIXI.Texture.fromImage("assets/sprites/" + this.style.tiles[cellData.tile].texture);
+			var texture = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/" + this.style.tiles[cellData.tile].texture);
 			cellData.sprite = this._createSpriteAtPosition(texture, cellData.x, cellData.y, cellData.z);
         }
     }
