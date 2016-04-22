@@ -21,12 +21,8 @@ Tacticode.init = function (parent) {
 	Tacticode.renderer = new PIXI.autoDetectRenderer(Tacticode.GAME_WIDTH, Tacticode.GAME_HEIGHT);
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
-	
-	Tacticode.coordinatesText = new PIXI.Text('', {font: '20px Arial', fill: 0xEEEEEE, dropShadow: true, dropShadowColor: 0x000000, dropShadowDistance: 2});
-	Tacticode.coordinatesText.x = 8;
-	Tacticode.coordinatesText.y = 8;
-	
-	Tacticode.stage.addChild(Tacticode.coordinatesText);
+	Tacticode.cellInformation = new Tacticode.CellInformation(Tacticode.stage);
+
 	document.getElementById(parent).appendChild(Tacticode.renderer.view);
 
     requestAnimationFrame(Tacticode._animate);
@@ -50,11 +46,7 @@ Tacticode.loadMap = function (mapName, callback) {
 		callback();
 	});
 	Tacticode.map.onCellSelected = function (cell) {
-		if (cell) {
-			Tacticode.coordinatesText.text = ('cell: (' + cell.x + ',' + cell.y + ') height: ' + cell.z + '\naccessible: ' + cell.accessible + '\nline-of-sight: ' + cell.los);
-		} else {
-			Tacticode.coordinatesText.text = ('');
-		}
+		Tacticode.cellInformation.update(cell);
 	};
 };
 
