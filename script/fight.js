@@ -1,9 +1,4 @@
-Tacticode.Fight = {
-	textureNext: PIXI.Texture.fromImage("assets/sprites/buttons/next.png"),
-	texturePlay: PIXI.Texture.fromImage("assets/sprites/buttons/play.png"),
-	texturePause: PIXI.Texture.fromImage("assets/sprites/buttons/pause.png"),
-	textureStop: PIXI.Texture.fromImage("assets/sprites/buttons/stop.png")
-};
+Tacticode.Fight = {};
 
 Tacticode.Fight.demo = function* (){
 	yield* Tacticode.Fight.wait(0.1);
@@ -70,6 +65,11 @@ Tacticode.Fight.initButtons = function(){
 	Tacticode.Fight.undoPressed = false;
 	Tacticode.Fight.stopPressed = false;
 	Tacticode.Fight.undoData = [];
+
+	Tacticode.Fight.textureNext = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/next.png");
+	Tacticode.Fight.texturePlay = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/play.png");
+	Tacticode.Fight.texturePause = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/pause.png");
+	Tacticode.Fight.textureStop = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/stop.png");
 	
 	Tacticode.Fight.stopButton = new PIXI.Sprite(Tacticode.Fight.textureStop);
 	Tacticode.Fight.pauseButton = new PIXI.Sprite(Tacticode.Fight.texturePause);
