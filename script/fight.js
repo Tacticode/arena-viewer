@@ -158,7 +158,7 @@ Tacticode.Fight.mainLoop = function* (){
 
 Tacticode.Fight.isCurrentActionInstant = function () {
 	var type = Tacticode.Fight.fightData.actions[Tacticode.Fight.currentAction].type;
-	if (type == 'damage' || type == 'heal') {
+	if (type == 'damage' || type == 'heal' || type == 'death') {
 		return true;
 	}
 	return false;

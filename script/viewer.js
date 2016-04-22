@@ -25,11 +25,14 @@ var fight = {
 		{"type": "move", "entity": 2, "x": 6, "y": 6},
 		{"type": "skill", "entity": 2, "skill": "arrow", "x": 5, "y": 0},
 		{"type": "move", "entity": 2, "x": 5, "y": 6},
-		{"type": "skill", "entity": 2, "skill": "arrow", "x": 25, "y": 0},
-		{"type": "move", "entity": 2, "x": 5, "y": 5},
 		{"type": "skill", "entity": 2, "skill": "arrow", "x": 4, "y": 12},
-		{"type": "move", "entity": 2, "x": 6, "y": 5},
-		{"type": "skill", "entity": 2, "skill": "arrow", "x": -5, "y": 5}
+		
+		{"type": "skill", "entity": 2, "skill": "iceball", "x": 1, "y": 2},
+		{"type": "damage", "entity": 0, "health": 617},
+		{"type": "skill", "entity": 2, "skill": "iceball", "x": 1, "y": 2},
+		{"type": "damage", "entity": 0, "health": 434},
+		{"type": "death", "entity": 0},
+		{"type": "move", "entity": 2, "x": 5, "y": 5},
 	]
 };
 
