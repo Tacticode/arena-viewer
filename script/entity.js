@@ -31,7 +31,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 		e.sprite = new PIXI.Sprite(e.textures[0]);
 		e.sprite.anchor.x = 0.5;
 		e.sprite.anchor.y = 0.5;
-		Tacticode.stage.addChild(e.sprite);
+		Tacticode.entities.container.addChild(e.sprite);
 		e.updateSpritePos();
 		callback();
 	});
@@ -101,10 +101,11 @@ Tacticode.Entity.prototype.debug = function() {
 	console.log("team:" + this.team);
 }
 
-Tacticode.EntityAnimator = function(container) {
-	this.container = container;
+Tacticode.EntityAnimator = function (stage) {
+	this.container = new PIXI.Container();
 	this.entities = [];
 	this.map = null;
+	stage.addChild(this.container);
 }
 
 Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) {
@@ -123,6 +124,13 @@ Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) 
 
 Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	var entity = this.entities[action.entity];
+	
+	if (action.type == "damage") {
+		var coords = Tacticode.Map.mapToProjection(entity.x, entity.y, entity.z);
+		Tacticode.overlayManager.addDamage(coords[0], coords[1], action.health);
+		return;
+	}
+	
 	var startX = entity.x;
 	var startY = entity.y;
 	var startZ = entity.z;

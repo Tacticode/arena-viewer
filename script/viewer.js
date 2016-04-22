@@ -18,7 +18,7 @@ var fight = {
 
 		{"type": "move", "entity": 2, "x": 6, "y": 5},
 		{"type": "skill", "entity": 2, "skill": "arrow", "x": 2, "y": 4},
-		{"type": "damage", "entity": 2, "health": 179},
+		{"type": "damage", "entity": 1, "health": 179},
 		
 		{"type": "move", "entity": 2, "x": 6, "y": 6},
 		{"type": "skill", "entity": 2, "skill": "arrow", "x": 5, "y": 0},

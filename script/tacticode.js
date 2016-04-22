@@ -22,6 +22,7 @@ Tacticode.init = function (parent) {
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.cellInformation = new Tacticode.CellInformation(Tacticode.stage);
+	Tacticode.overlayManager = new Tacticode.OverlayManager(Tacticode.stage);
 
 	document.getElementById(parent).appendChild(Tacticode.renderer.view);
 
@@ -55,6 +56,7 @@ Tacticode.loadMap = function (mapName, callback) {
  */
 Tacticode.update = function () {
 	Tacticode.projectiles.animate();
+	Tacticode.overlayManager.update();
 	if (Tacticode.animateFight) {
 		Tacticode.animateFight.next();
 	}
