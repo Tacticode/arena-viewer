@@ -39,7 +39,7 @@ Tacticode.CustomTexture.prototype.addPart = function(part, frame, tint = 0xFFFFF
 	var direction = frame % 4;
 	var animationNames = ["stand", "attack"];
 	var directionNames = ["sw", "se", "nw", "ne"];
-	var file = part.path;
+	var file = Tacticode.ASSETS_PATH + part.path;
 	var mirrored = false;
 	var types = Tacticode.CustomTexture.CharacterPart.types;
 	
@@ -120,29 +120,29 @@ Tacticode.CustomTexture.CharacterPart = function(path, type, scale = 3/4){
 	// types.NO_ANIM = types.NO_STAND + types.NO_ATTACK;
 	
 	Tacticode.CustomTexture.CharacterPart.parts = {
-		body1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/body1",
+		body1: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/body1",
 			types.IS_MIRRORED),
-		eyes1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/eyes1",
+		eyes1: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/eyes1",
 			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
-		face1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/face1",
+		face1: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/face1",
 			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
-		face2: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/face2",
+		face2: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/face2",
 			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
-		hair1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/body/hair1",
+		hair1: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/hair1",
 			types.IS_MIRRORED | types.NO_ANIM),
-		clothes1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/clothes1",
+		clothes1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/clothes1",
 			types.IS_MIRRORED | types.NO_ANIM),
-		clothes2: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/clothes2",
+		clothes2: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/clothes2",
 			types.IS_MIRRORED | types.NO_ANIM),
-		armor1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/armor1",
+		armor1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/armor1",
 			types.IS_MIRRORED | types.NO_ANIM),
-		armor2: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/armor2",
+		armor2: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/armor2",
 			types.IS_MIRRORED | types.NO_ANIM),
-		boots1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/boots1",
+		boots1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/boots1",
 			types.IS_MIRRORED | types.NO_ANIM),
-		hat1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/hat1",
+		hat1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/hat1",
 			types.SINGLE_IMAGE),
-		sword1: new Tacticode.CustomTexture.CharacterPart("assets/sprites/character/equipment/sword1",
+		sword1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/sword1",
 			types.IS_MIRRORED)
 	}
 }

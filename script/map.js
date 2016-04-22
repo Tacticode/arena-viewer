@@ -18,8 +18,8 @@ Tacticode.Map = function () {
 /**
  * Static variables and constants.
  */
-Tacticode.Map.MAP_PATH = 'script/maps/';
-Tacticode.Map.STYLE_PATH = 'script/styles/';
+Tacticode.Map.MAP_PATH = 'maps/';
+Tacticode.Map.STYLE_PATH = 'styles/';
 Tacticode.Map.EXTENSION = '.json';
 
 /**
@@ -49,7 +49,7 @@ Tacticode.Map.projectionToMap = function (x, y) {
  * Calls the callback upon success.
  */
 Tacticode.Map.prototype.loadFromName = function (name, callback) {
-	var url = Tacticode.Map.MAP_PATH + name + Tacticode.Map.EXTENSION;
+	var url = Tacticode.ASSETS_PATH + Tacticode.Map.MAP_PATH + name + Tacticode.Map.EXTENSION;
 	var root = this;
 	jQuery.getJSON(url, function (data) {
 		root.loadFromData(data, callback);
@@ -112,7 +112,7 @@ Tacticode.Map.prototype.containsCell = function (x, y, z) {
  * @private
  */
 Tacticode.Map.prototype._loadStyleFromName = function (name, callback) {
-	var url = Tacticode.Map.STYLE_PATH + name + Tacticode.Map.EXTENSION;
+	var url = Tacticode.ASSETS_PATH + Tacticode.Map.STYLE_PATH + name + Tacticode.Map.EXTENSION;
 	var root = this;
 	jQuery.getJSON(url, function (data) {
 		root.style = data;
