@@ -124,6 +124,8 @@ Tacticode.Fight.mainLoop = function* (){
 		if (Tacticode.Fight.skipPressed){ // next button pressed
 			if (Tacticode.Fight.currentAction < data.actions.length - 1)
 				++Tacticode.Fight.currentAction;
+			while (Tacticode.Fight.currentAction < data.actions.length - 1 && Tacticode.Fight.isCurrentActionInstant())
+				++Tacticode.Fight.currentAction;
 			Tacticode.Fight.skipPressed = false;
 			Tacticode.projectiles.clear();
 		}
@@ -131,7 +133,7 @@ Tacticode.Fight.mainLoop = function* (){
 			Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[Tacticode.Fight.currentAction]);
 			if (Tacticode.Fight.currentAction > 0)
 				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
-			while (Tacticode.Fight.currentAction > 0 && data.actions[Tacticode.Fight.currentAction].type == 'damage')
+			while (Tacticode.Fight.currentAction > 0 && Tacticode.Fight.isCurrentActionInstant())
 				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
 			Tacticode.Fight.undoPressed = false;
 			Tacticode.projectiles.clear();
@@ -153,6 +155,14 @@ Tacticode.Fight.mainLoop = function* (){
 		}
 	}
 }
+
+Tacticode.Fight.isCurrentActionInstant = function () {
+	var type = Tacticode.Fight.fightData.actions[Tacticode.Fight.currentAction].type;
+	if (type == 'damage' || type == 'heal') {
+		return true;
+	}
+	return false;
+};
 
 Tacticode.Fight.play = function (data) {
 	Tacticode.Fight.fightData = data;
