@@ -131,6 +131,8 @@ Tacticode.Fight.mainLoop = function* (){
 			Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[Tacticode.Fight.currentAction]);
 			if (Tacticode.Fight.currentAction > 0)
 				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
+			while (Tacticode.Fight.currentAction > 0 && data.actions[Tacticode.Fight.currentAction].type == 'damage')
+				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
 			Tacticode.Fight.undoPressed = false;
 			Tacticode.projectiles.clear();
 		}
