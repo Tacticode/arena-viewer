@@ -21,8 +21,12 @@ Tacticode.init = function (parent) {
 	Tacticode.renderer = new PIXI.autoDetectRenderer(Tacticode.GAME_WIDTH, Tacticode.GAME_HEIGHT);
 	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
-	Tacticode.coordinatesText = new Tacticode.ShadowText(8, 8, '20px Arial', 0xEEEEEE, 0x000000);
-	Tacticode.stage.addChild(Tacticode.coordinatesText.container);
+	
+	Tacticode.coordinatesText = new PIXI.Text('', {font: '20px Arial', fill: 0xEEEEEE, dropShadow: true, dropShadowColor: 0x000000, dropShadowDistance: 2});
+	Tacticode.coordinatesText.x = 8;
+	Tacticode.coordinatesText.y = 8;
+	
+	Tacticode.stage.addChild(Tacticode.coordinatesText);
 	document.getElementById(parent).appendChild(Tacticode.renderer.view);
 
     requestAnimationFrame(Tacticode._animate);
@@ -47,9 +51,9 @@ Tacticode.loadMap = function (mapName, callback) {
 	});
 	Tacticode.map.onCellSelected = function (cell) {
 		if (cell) {
-			Tacticode.coordinatesText.setText('cell: (' + cell.x + ',' + cell.y + ') height: ' + cell.z + '\naccessible: ' + cell.accessible + '\nline-of-sight: ' + cell.los);
+			Tacticode.coordinatesText.text = ('cell: (' + cell.x + ',' + cell.y + ') height: ' + cell.z + '\naccessible: ' + cell.accessible + '\nline-of-sight: ' + cell.los);
 		} else {
-			Tacticode.coordinatesText.setText('');
+			Tacticode.coordinatesText.text = ('');
 		}
 	};
 };
