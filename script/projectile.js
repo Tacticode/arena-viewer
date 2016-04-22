@@ -32,19 +32,19 @@ Tacticode.Projectile.randomMove = function(startPos, length){
 
 Tacticode.Projectile.Type = {
 	FireParticle:{name:"FireParticle", speed:4, orientedTexture:false,
-			texture:PIXI.Texture.fromImage("assets/effect/particle_fire.png"),
+			texturePath:"effect/particle_fire.png",
 			particleType:null},
 	IceParticle:{name:"IceParticle", speed:3, orientedTexture:false,
-			texture:PIXI.Texture.fromImage("assets/effect/particle_ice.png"),
+			texturePath:"effect/particle_ice.png",
 			particleType:null},
 	Arrow:{name:"arrow", speed:6, orientedTexture:true,
-			texture:PIXI.Texture.fromImage("assets/effect/arrow.png"),
+			texturePath:"effect/arrow.png",
 			particleType:null},
 	Fire:{name:"fireball", speed:15, orientedTexture:false,
-			texture:PIXI.Texture.fromImage("assets/effect/fireball.png"),
+			texturePath:"effect/fireball.png",
 			particleType:"FireParticle", particleDistance:75},
 	Ice:{name:"iceball", speed:8, orientedTexture:false,
-			texture:PIXI.Texture.fromImage("assets/effect/iceball.png"),
+			texturePath:"effect/iceball.png",
 			particleType:"IceParticle", particleDistance:30}
 }
 
@@ -73,9 +73,18 @@ Tacticode.Projectile.prototype.update = function() {
 }
 
 Tacticode.ProjectilesAnimator = function(container) {
+	this.loadTextures();
 	this.container = container;
 	this.projectiles = [];
 }
+
+Tacticode.ProjectilesAnimator.prototype.loadTextures = function () {
+	for (var particleType in Tacticode.Projectile.Type) {
+		var path = Tacticode.ASSETS_PATH + Tacticode.Projectile.Type[particleType].texturePath;
+		var texture = PIXI.Texture.fromImage(path);
+		Tacticode.Projectile.Type[particleType].texture = texture;
+	};
+};
 
 Tacticode.ProjectilesAnimator.checkDelete = function(p) {
 	return p.currentFrame <= p.nbFrames;
