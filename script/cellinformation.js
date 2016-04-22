@@ -26,10 +26,16 @@ Tacticode.CellInformation = function (stage) {
  */
 Tacticode.CellInformation.prototype.update = function (cell) {
 	if (cell) {
-		this.text.text =
+		var entity = Tacticode.entities.getEntityOnCell(cell.x, cell.y, cell.z + 1);
+		var text =
 			'cell: (' + cell.x + ',' + cell.y + ') height: ' + cell.z + '\n' +
 			'accessible: ' + cell.accessible + '\n' +
 			'line-of-sight: ' + cell.los;
+		if (entity !== null) {
+			text += '\n\n';
+			text += 'id: ' + entity.id + ' health: ' + entity.health;
+		}
+		this.text.text = text;
 	} else {
 		this.text.text = '';
 	}

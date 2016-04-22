@@ -23,6 +23,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 		}
 	
 	this.team = entity.team;
+	this.health = entity.health;
 	var e = this;
 	// this.textures = this.breed.defaultTextures;
 	Tacticode.CustomTexture.test(this, function(textures) {
@@ -122,10 +123,20 @@ Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) 
 	}
 }
 
+Tacticode.EntityAnimator.prototype.getEntityOnCell = function (x, y, z) {
+	for (var entity of this.entities) {
+		if (entity.x == x && entity.y == y && entity.z == z) {
+			return entity;
+		}
+	}
+	return null;
+};
+
 Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	var entity = this.entities[action.entity];
 	
 	if (action.type == "damage") {
+		entity.health -= action.health;
 		var coords = Tacticode.Map.mapToProjection(entity.x, entity.y, entity.z);
 		Tacticode.overlayManager.addDamage(coords[0], coords[1], action.health);
 		return;
@@ -172,6 +183,7 @@ Tacticode.EntityAnimator.prototype.backupEntity = function(action){
 		x:entity.x,
 		y:entity.y,
 		z:entity.z,
+		health:entity.health,
 		texture:sprite.texture,
 		pixelX:sprite.x,
 		pixelY:sprite.y
@@ -184,6 +196,7 @@ Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
 	entity.x = backup.x;
 	entity.y = backup.y;
 	entity.z = backup.z;
+	entity.health = backup.health;
 	sprite.texture = backup.texture;
 	sprite.x = backup.pixelX;
 	sprite.y = backup.pixelY;
