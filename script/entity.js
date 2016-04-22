@@ -141,6 +141,12 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		Tacticode.overlayManager.addDamage(coords[0], coords[1], action.health);
 		return;
 	}
+	if (action.type == "heal") {
+		entity.health += action.health;
+		var coords = Tacticode.Map.mapToProjection(entity.x, entity.y, entity.z);
+		Tacticode.overlayManager.addHeal(coords[0], coords[1], action.health);
+		return;
+	}
 	
 	var startX = entity.x;
 	var startY = entity.y;

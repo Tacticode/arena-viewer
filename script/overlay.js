@@ -33,6 +33,13 @@ Tacticode.OverlayManager.prototype.addDamage = function (x, y, health) {
 	this.overlays.push(overlay);
 };
 
+Tacticode.OverlayManager.prototype.addHeal = function (x, y, health) {
+	x += Tacticode.GAME_WIDTH / 2;
+	y += Tacticode.GAME_HEIGHT / 4 - Tacticode.CELL_HEIGHT_HALF * 2;
+	var overlay = new Tacticode.TextOverlay(this.container, x, y, 0x00F000, health)
+	this.overlays.push(overlay);
+};
+
 Tacticode.TextOverlay = function (container, x, y, color, text) {
 	this.container = container;
 	this.text = new PIXI.Text(text, {
