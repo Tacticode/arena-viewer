@@ -136,6 +136,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	var entity = this.entities[action.entity];
 	
 	if (action.type == "damage") {
+		Tacticode.sound.play('impact');
 		entity.health -= action.health;
 		var coords = Tacticode.Map.mapToProjection(entity.x, entity.y, entity.z);
 		Tacticode.overlayManager.addDamage(coords[0], coords[1], action.health);
@@ -170,7 +171,8 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 			yield null;
 		}
 	}
-	else if (action.type == "skill"){
+	else if (action.type == "skill") {
+		Tacticode.sound.play('swing');
 		var startCoords = Tacticode.Map.mapToProjection(startX, startY, startZ);
 		var endCoords = Tacticode.Map.mapToProjection(endX, endY, endZ);
 		

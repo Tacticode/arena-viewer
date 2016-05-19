@@ -23,6 +23,9 @@ Tacticode.init = function (parent) {
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.cellInformation = new Tacticode.CellInformation(Tacticode.stage);
 	Tacticode.overlayManager = new Tacticode.OverlayManager(Tacticode.stage);
+	Tacticode.sound = new SoundManager(Tacticode.ASSETS_PATH + 'sound/');
+	Tacticode.sound.register('swing', 'swing.wav', 2);
+	Tacticode.sound.register('impact', 'impactWood.ogg', 2);
 
 	document.getElementById(parent).appendChild(Tacticode.renderer.view);
 
