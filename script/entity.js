@@ -26,7 +26,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 	this.health = entity.health;
 	var e = this;
 	// this.textures = this.breed.defaultTextures;
-	Tacticode.CustomTexture.test(this, function(textures) {
+	Tacticode.CustomTexture.entityTexture(this, function(textures) {
 		e.textures = textures;
 		e.textureId = 0;
 		e.sprite = new PIXI.Sprite(e.textures[0]);

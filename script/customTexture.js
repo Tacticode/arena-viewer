@@ -130,6 +130,10 @@ Tacticode.CustomTexture.CharacterPart = function(path, type, scale = 3/4){
 			types.IS_MIRRORED | types.SINGLE_IMAGE | types.FRONT_ONLY | types.NO_ANIM),
 		hair1: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/hair1",
 			types.IS_MIRRORED | types.NO_ANIM),
+		hair2: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/hair2",
+			types.IS_MIRRORED | types.NO_ANIM),
+		hair3: new Tacticode.CustomTexture.CharacterPart("sprites/character/body/hair3",
+			types.IS_MIRRORED | types.NO_ANIM),
 		clothes1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/clothes1",
 			types.IS_MIRRORED | types.NO_ANIM),
 		clothes2: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/clothes2",
@@ -143,11 +147,15 @@ Tacticode.CustomTexture.CharacterPart = function(path, type, scale = 3/4){
 		hat1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/hat1",
 			types.SINGLE_IMAGE),
 		sword1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/sword1",
+			types.IS_MIRRORED),
+		bow1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/bow1",
+			types.IS_MIRRORED),
+		staff1: new Tacticode.CustomTexture.CharacterPart("sprites/character/equipment/staff1",
 			types.IS_MIRRORED)
 	}
 }
 
-Tacticode.CustomTexture.test = function(entity, callback = None){
+Tacticode.CustomTexture.entityTexture = function(entity, callback = None){
 	var textures = [];
 	var skin;
 	var parts = Tacticode.CustomTexture.CharacterPart.parts;
