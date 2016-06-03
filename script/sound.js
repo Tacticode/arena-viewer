@@ -3,6 +3,7 @@
 var SoundManager = function (basePath) {
 	this.basePath = basePath;
 	this.sounds = {};
+	this.isMuted = false;
 };
 
 SoundManager.prototype.register = function (name, path, number) {
@@ -11,7 +12,9 @@ SoundManager.prototype.register = function (name, path, number) {
 };
 
 SoundManager.prototype.play = function (name) {
-	this.sounds[name].play();
+	if (!this.isMuted) {
+		this.sounds[name].play();
+	}
 };
 
 var Sound = function (path, number) {
