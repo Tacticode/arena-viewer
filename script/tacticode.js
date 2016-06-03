@@ -27,6 +27,7 @@ Tacticode.init = function (parent) {
 	Tacticode.sound.register('swing', 'swing.wav', 2);
 	Tacticode.sound.register('impact', 'impactWood.ogg', 2);
 	Tacticode._createVolumeButtons();
+	Tacticode.speed = 1;
 
 	document.getElementById(parent).appendChild(Tacticode.renderer.view);
 

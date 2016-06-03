@@ -67,7 +67,7 @@ Tacticode.Projectile.prototype.update = function() {
 	var progress = this.currentFrame / this.nbFrames;
 	this.sprite.position.x = this.start.x * (1 - progress) + this.end.x * progress;
 	this.sprite.position.y = this.start.y * (1 - progress) + this.end.y * progress;
-	this.currentFrame++;
+	this.currentFrame += Tacticode.speed;
 	if (this.particle != null)
 		this.particleEffect();
 }
