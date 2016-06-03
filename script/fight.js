@@ -44,6 +44,13 @@ Tacticode.Fight.prev = function(){
 	Tacticode.Fight.undoPressed = true;
 }
 
+Tacticode.Fight.speed = function(){
+	if (Tacticode.speed > 2)
+		Tacticode.speed = 1;
+	else
+		Tacticode.speed++;
+}
+
 Tacticode.Fight.buttonMouseOver = function(sprite){
 	return function(){
 		sprite.scale.x = 1;
@@ -70,18 +77,22 @@ Tacticode.Fight.initButtons = function(){
 	Tacticode.Fight.texturePlay = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/play.png");
 	Tacticode.Fight.texturePause = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/pause.png");
 	Tacticode.Fight.textureStop = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/stop.png");
+	Tacticode.Fight.textureSpeed = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/speed.png");
 	
 	Tacticode.Fight.stopButton = new PIXI.Sprite(Tacticode.Fight.textureStop);
 	Tacticode.Fight.pauseButton = new PIXI.Sprite(Tacticode.Fight.texturePause);
 	Tacticode.Fight.nextButton = new PIXI.Sprite(Tacticode.Fight.textureNext);
 	Tacticode.Fight.prevButton = new PIXI.Sprite(Tacticode.Fight.textureNext);
+	Tacticode.Fight.speedButton = new PIXI.Sprite(Tacticode.Fight.textureSpeed);
 	
 	var buttons = [Tacticode.Fight.nextButton, Tacticode.Fight.pauseButton,
-		Tacticode.Fight.stopButton, Tacticode.Fight.prevButton];
-	var positions = [16, 48, 80, 112];
-	var rotations = [0, 0, 0, Math.PI];
+		Tacticode.Fight.stopButton, Tacticode.Fight.prevButton,
+		Tacticode.Fight.speedButton];
+	var positions = [16, 48, 80, 112, 144];
+	var rotations = [0, 0, 0, Math.PI, 0];
 	var actions = [Tacticode.Fight.next, Tacticode.Fight.pause,
-		Tacticode.Fight.stop, Tacticode.Fight.prev];
+		Tacticode.Fight.stop, Tacticode.Fight.prev,
+		Tacticode.Fight.speed];
 	var x = Tacticode.GAME_WIDTH;
 	for (var i = 0; i < buttons.length; i++){
 		var b = buttons[i];

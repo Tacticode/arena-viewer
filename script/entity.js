@@ -164,7 +164,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	entity.updateSpriteDirection(startX, startY, endX, endY);
 	if (action.type == "move"){
 		var nbFrame = 45;
-		for (var i = 1; i <= nbFrame; ++i){
+		for (var i = 1; i <= nbFrame; i += Tacticode.speed){
 			entity.x = (startX * (nbFrame - i) + endX * i) / nbFrame;
 			entity.y = (startY * (nbFrame - i) + endY * i) / nbFrame;
 			entity.z = (startZ * (nbFrame - i) + endZ * i) / nbFrame;
