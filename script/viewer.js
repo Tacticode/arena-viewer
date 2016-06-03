@@ -6,9 +6,9 @@
 var fight = {
 	"map": "sample",
 	"entities": [
-		{"id": 0, "x": 1, "y": 2, "breed": "orc", "team": 0, "health": 1000},
+		{"id": 0, "x": 1, "y": 2, "breed": "orc", "team": 0, "health": 1000, "weapon": "staff1"},
 		{"id": 1, "x": 1, "y": 3, "breed": "orc", "team": 0, "health": 800},
-		{"id": 2, "x": 6, "y": 4, "breed": "elf", "team": 1, "health": 600}
+		{"id": 2, "x": 6, "y": 4, "breed": "elf", "team": 1, "health": 600, "weapon": "bow1"}
 	],
 	"actions" : [
 		{"type": "move", "entity": 1, "x": 2, "y": 3},

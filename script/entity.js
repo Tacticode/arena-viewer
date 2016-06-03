@@ -24,6 +24,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 	
 	this.team = entity.team;
 	this.health = entity.health;
+	this.weapon = entity.weapon || "sword1";
 	var e = this;
 	// this.textures = this.breed.defaultTextures;
 	Tacticode.CustomTexture.entityTexture(this, function(textures) {
