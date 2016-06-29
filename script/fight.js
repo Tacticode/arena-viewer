@@ -115,6 +115,8 @@ Tacticode.Fight.initButtons = function(){
 Tacticode.Fight.mainLoop = function* (){
 	var data = Tacticode.Fight.fightData;
 	
+	if (data.actions.length === 0) return;
+	
 	while (true){
 		// saving entity information to go back in the animation
 		if (Tacticode.Fight.currentAction == Tacticode.Fight.undoData.length)
