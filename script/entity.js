@@ -14,7 +14,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 	this.id = entity.id;
 	this.x = entity.x;
 	this.y = entity.y;
-	this.z = (typeof entity.z === "undefined") ? 1 : entity.z;
+	this.z = Tacticode.map.getCell(this.x, this.y).z + 1;
 	this.breed = null;
 	for (var b in Tacticode.Entity.Breed)
 		if (entity.breed == Tacticode.Entity.Breed[b].name){
@@ -159,7 +159,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	var startZ = entity.z;
 	var endX = action.x;
 	var endY = action.y;
-	var endZ = action.z || entity.z;
+	var endZ = Tacticode.map.getCell(endX, endY).z + 1;
 	
 	entity.updateSpriteDirection(startX, startY, endX, endY);
 	if (action.type == "move"){

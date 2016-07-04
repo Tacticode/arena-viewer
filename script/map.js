@@ -92,7 +92,7 @@ Tacticode.Map.prototype.loadFromData = function (data, callback) {
 Tacticode.Map.prototype.getCell = function (x, y, z) {
     for (var i = 0; i < this.cells.length; ++i) {
         var cell = this.cells[i];
-        if (cell.x == x && cell.y == y && cell.z == z) {
+        if (cell.x == x && cell.y == y && (z === undefined || cell.z === z)) {
             return cell;
         }
     }
@@ -220,7 +220,7 @@ Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
  * @private
  */
 Tacticode.Map.prototype._compareCells = function (a, b) {
-    if (a.z !== b.z) return (a.z - b.z);
     if (a.x !== b.x) return (a.x - b.x);
-    return a.y - b.y;
+    if (a.y !== b.y) return (a.y - b.y);
+    return a.z - b.z;
 };
