@@ -105,7 +105,7 @@ Tacticode.Entity.prototype.debug = function() {
 
 Tacticode.EntityAnimator = function (stage) {
 	this.container = new PIXI.Container();
-	this.entities = [];
+	this.entities = {};
 	this.map = null;
 	stage.addChild(this.container);
 }
@@ -120,12 +120,13 @@ Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) 
 	}
 	
 	for (var e of entities){
-		this.entities.push(new Tacticode.Entity(e, this, callback));
+		this.entities[e.id] = new Tacticode.Entity(e, this, callback);
 	}
 }
 
 Tacticode.EntityAnimator.prototype.getEntityOnCell = function (x, y, z) {
-	for (var entity of this.entities) {
+	for (var key in this.entities) {
+		let entity = this.entities[key];
 		if (entity.x == x && entity.y == y && entity.z == z && entity.sprite.renderable) {
 			return entity;
 		}

@@ -72,20 +72,20 @@ var fight = {
 		]
 	},
 	"entities": [
-		{"id": 0, "x": 1, "y": 2, "breed": "orc", "team": 0, "health": 1000, "weapon": "staff1"},
-		{"id": 1, "x": 1, "y": 3, "breed": "orc", "team": 0, "health": 800},
+		{"id": 957, "x": 1, "y": 2, "breed": "orc", "team": 0, "health": 1000, "weapon": "staff1"},
+		{"id": 22, "x": 1, "y": 3, "breed": "orc", "team": 0, "health": 800},
 		{"id": 2, "x": 4, "y": 2, "breed": "elf", "team": 1, "health": 600, "weapon": "bow1"}
 	],
 	"actions" : [
-		{"type": "move", "entity": 1, "x": 2, "y": 3},
-		{"type": "move", "entity": 1, "x": 2, "y": 4},
-		{"type": "skill", "entity": 0, "skill": "fireball", "x": 4, "y": 2},
-		{"type": "heal", "entity": 0, "health": 51},
+		{"type": "move", "entity": 22, "x": 2, "y": 3},
+		{"type": "move", "entity": 22, "x": 2, "y": 4},
+		{"type": "skill", "entity": 957, "skill": "fireball", "x": 4, "y": 2},
+		{"type": "heal", "entity": 957, "health": 51},
 		{"type": "damage", "entity": 2, "health": 51},
 
 		{"type": "move", "entity": 2, "x": 4, "y": 3},
 		{"type": "skill", "entity": 2, "skill": "arrow", "x": 2, "y": 4},
-		{"type": "damage", "entity": 1, "health": 179},
+		{"type": "damage", "entity": 22, "health": 179},
 		{"type": "heal", "entity": 2, "health": 179},
 		
 		{"type": "move", "entity": 2, "x": 4, "y": 2},
@@ -94,10 +94,10 @@ var fight = {
 		{"type": "skill", "entity": 2, "skill": "arrow", "x": 4, "y": 0},
 		
 		{"type": "skill", "entity": 2, "skill": "iceball", "x": 1, "y": 2},
-		{"type": "damage", "entity": 0, "health": 617},
+		{"type": "damage", "entity": 957, "health": 617},
 		{"type": "skill", "entity": 2, "skill": "iceball", "x": 1, "y": 2},
-		{"type": "damage", "entity": 0, "health": 434},
-		{"type": "death", "entity": 0},
+		{"type": "damage", "entity": 957, "health": 434},
+		{"type": "death", "entity": 957},
 		{"type": "move", "entity": 2, "x": 3, "y": 1},
 	]
 };
