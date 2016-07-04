@@ -45,9 +45,9 @@ Tacticode.loadFight = function (data) {
 /**
  * Load and display the specified map and call the callback upon success.
  */
-Tacticode.loadMap = function (mapName, callback) {
+Tacticode.loadMap = function (mapData, callback) {
 	Tacticode.map = new Tacticode.Map();
-	Tacticode.map.loadFromName(mapName, function () {
+	Tacticode.map.loadFromData(mapData, function () {
 		Tacticode.stage.addChildAt(Tacticode.map.container, 0);
 		callback();
 	});

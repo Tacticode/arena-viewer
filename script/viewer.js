@@ -4,7 +4,73 @@
  */
 
 var fight = {
-	"map": "sample",
+	"map": {
+		"name": "Sample map",
+		"style": "basic",
+		"width": 5,
+		"height": 5,
+		"cells" : [
+			{"x": 0, "y": 0, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 0, "y": 1, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 0, "y": 2, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 0, "y": 3, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 0, "y": 4, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 1, "y": 0, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 1, "y": 1, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 1, "y": 2, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 1, "y": 3, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 1, "y": 4, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 2, "y": 0, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 2, "y": 1, "z": 1 , "tile": "TREE", "accessible": false, "los": false},
+			{"x": 2, "y": 2, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 2, "y": 3, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 2, "y": 4, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 3, "y": 0, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 3, "y": 1, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 3, "y": 2, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 3, "y": 3, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 3, "y": 4, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 4, "y": 0, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 4, "y": 1, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 4, "y": 2, "tile": "GROUND", "accessible": true, "los": true},
+			{"x": 4, "y": 3, "z": 1, "tile": "TREE", "accessible": false, "los": false},
+			{"x": 4, "y": 4, "tile": "GROUND", "accessible": true, "los": true}
+		],
+		"start_positions": [
+			{
+				"x": 1,
+				"y": 0
+			},
+			{
+				"x": 2,
+				"y": 0
+			},
+			{
+				"x": 3,
+				"y": 0
+			},
+			{
+				"x": 4,
+				"y": 0
+			},
+			{
+				"x": 0,
+				"y": 0
+			},
+			{
+				"x": 11,
+				"y": 0
+			},
+			{
+				"x": 0,
+				"y": 11
+			},
+			{
+				"x": 11,
+				"y": 11
+			}
+		]
+	},
 	"entities": [
 		{"id": 0, "x": 1, "y": 2, "breed": "orc", "team": 0, "health": 1000, "weapon": "staff1"},
 		{"id": 1, "x": 1, "y": 3, "breed": "orc", "team": 0, "health": 800},
