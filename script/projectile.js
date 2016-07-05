@@ -37,13 +37,13 @@ Tacticode.Projectile.Type = {
 	IceParticle:{name:"IceParticle", speed:3, orientedTexture:false,
 			texturePath:"effect/particle_ice.png",
 			particleType:null},
-	Arrow:{name:"arrow", speed:6, orientedTexture:true,
+	Arrow:{name:"ARROW", speed:6, orientedTexture:true,
 			texturePath:"effect/arrow.png",
 			particleType:null},
-	Fire:{name:"fireball", speed:15, orientedTexture:false,
+	Fire:{name:"FIREBALL", speed:15, orientedTexture:false,
 			texturePath:"effect/fireball.png",
 			particleType:"FireParticle", particleDistance:75},
-	Ice:{name:"iceball", speed:8, orientedTexture:false,
+	Ice:{name:"ICEBALL", speed:8, orientedTexture:false,
 			texturePath:"effect/iceball.png",
 			particleType:"IceParticle", particleDistance:30}
 }
@@ -121,7 +121,6 @@ Tacticode.ProjectilesAnimator.prototype.addWithString = function(startPosition, 
 	for (t in Tacticode.Projectile.Type)
 		if (Tacticode.Projectile.Type[t].name == typeStr)
 			type = Tacticode.Projectile.Type[t];
-	if (type)
-		return this.add(startPosition, endPosition, type);
-	return 0;
+	if (!type) type = Tacticode.Projectile.Type.Ice;
+	return this.add(startPosition, endPosition, type);
 }
