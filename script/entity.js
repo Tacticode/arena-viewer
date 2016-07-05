@@ -50,6 +50,9 @@ Tacticode.Entity.prototype.updateSpritePos = function() {
 }
 
 Tacticode.Entity.prototype.updateSpriteDirection = function(startX, startY, endX, endY) {
+	if (startX === endX && startY === endY) {
+		return;
+	}
 	var distX = Math.abs(endX - startX);
 	var distY = Math.abs(endY - startY);
 	var id;
