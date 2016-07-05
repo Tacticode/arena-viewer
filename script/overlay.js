@@ -63,9 +63,9 @@ Tacticode.TextOverlay.prototype.destroy = function () {
 };
 
 Tacticode.TextOverlay.prototype.update = function () {
-	this.age += 1;
+	this.age += Tacticode.speed;
 
-	this.text.y -= 2;
+	this.text.y -= 2 * Tacticode.speed;
 	this.scale -= 0.0005 * this.age;
 	this.text.scale.set(this.scale, this.scale);
 };
