@@ -90,7 +90,6 @@ Tacticode._createVolumeButtons = function () {
 	Tacticode.volumeOnButton.y = 16;
 	Tacticode.stage.addChild(Tacticode.volumeOnButton);
 	Tacticode.volumeOnButton.on('mousedown', function () {
-		console.log('on');
 		Tacticode.sound.isMuted = true;
 		Tacticode.stage.removeChild(Tacticode.volumeOnButton);
 		Tacticode.stage.addChild(Tacticode.volumeOffButton);
@@ -103,7 +102,6 @@ Tacticode._createVolumeButtons = function () {
 	Tacticode.volumeOffButton.x = Tacticode.GAME_WIDTH - 48;
 	Tacticode.volumeOffButton.y = 16;
 	Tacticode.volumeOffButton.on('mousedown', function () {
-		console.log('off');
 		Tacticode.sound.isMuted = false;
 		Tacticode.stage.removeChild(Tacticode.volumeOffButton);
 		Tacticode.stage.addChild(Tacticode.volumeOnButton);
