@@ -1,29 +1,5 @@
 Tacticode.Fight = {};
 
-Tacticode.Fight.demo = function* (){
-	yield* Tacticode.Fight.wait(0.1);
-	var c1 = Tacticode.stage.addChild(new PIXI.Sprite.fromImage("assets/test/character_dl.png"));
-	var c2 = Tacticode.stage.addChild(new PIXI.Sprite.fromImage("assets/test/character_ur.png"));
-	c1.x = 480;
-	c1.y = 130;
-	c2.x = 350;
-	c2.y = 190;
-	c1.anchor.x = 0.5;
-	c1.anchor.y = 0.5;
-	c2.anchor.x = 0.5;
-	c2.anchor.y = 0.5;
-	
-	var pos1 = {x:c1.x, y:c1.y};
-	var pos2 = {x:c2.x, y:c2.y};
-	
-	while (true){
-		yield* Tacticode.Fight.wait(1);
-		Tacticode.projectiles.add(pos1, pos2, Tacticode.Projectile.Type.Fire);
-		yield* Tacticode.Fight.wait(1);
-		Tacticode.projectiles.add(pos2, pos1, Tacticode.Projectile.Type.Ice);
-	}
-}
-
 Tacticode.Fight.pause = function(){
 	if (Tacticode.Fight.isPlaying)
 		Tacticode.Fight.pauseButton.texture = Tacticode.Fight.texturePlay;
@@ -49,6 +25,7 @@ Tacticode.Fight.speed = function(){
 		Tacticode.speed = 1;
 	else
 		Tacticode.speed++;
+	Tacticode.Fight.speedText.text = "x" + Tacticode.speed;
 }
 
 Tacticode.Fight.buttonMouseOver = function(sprite){
@@ -66,33 +43,35 @@ Tacticode.Fight.buttonMouseOut = function(sprite){
 }
 
 Tacticode.Fight.initButtons = function(){
-	Tacticode.Fight.isPlaying = true;
-	Tacticode.Fight.currentAction = 0;
-	Tacticode.Fight.skipPressed = false;
-	Tacticode.Fight.undoPressed = false;
-	Tacticode.Fight.stopPressed = false;
-	Tacticode.Fight.undoData = [];
+	var fight = Tacticode.Fight;
+	
+	fight.isPlaying = true;
+	fight.currentAction = 0;
+	fight.skipPressed = false;
+	fight.undoPressed = false;
+	fight.stopPressed = false;
+	fight.undoData = [];
 
-	Tacticode.Fight.textureNext = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/next.png");
-	Tacticode.Fight.texturePlay = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/play.png");
-	Tacticode.Fight.texturePause = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/pause.png");
-	Tacticode.Fight.textureStop = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/stop.png");
-	Tacticode.Fight.textureSpeed = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/speed.png");
+	fight.textureNext = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/next.png");
+	fight.texturePlay = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/play.png");
+	fight.texturePause = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/pause.png");
+	fight.textureStop = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/stop.png");
+	fight.textureSpeed = PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "sprites/buttons/speed.png");
 	
-	Tacticode.Fight.stopButton = new PIXI.Sprite(Tacticode.Fight.textureStop);
-	Tacticode.Fight.pauseButton = new PIXI.Sprite(Tacticode.Fight.texturePause);
-	Tacticode.Fight.nextButton = new PIXI.Sprite(Tacticode.Fight.textureNext);
-	Tacticode.Fight.prevButton = new PIXI.Sprite(Tacticode.Fight.textureNext);
-	Tacticode.Fight.speedButton = new PIXI.Sprite(Tacticode.Fight.textureSpeed);
+	fight.stopButton = new PIXI.Sprite(fight.textureStop);
+	fight.pauseButton = new PIXI.Sprite(fight.texturePause);
+	fight.nextButton = new PIXI.Sprite(fight.textureNext);
+	fight.prevButton = new PIXI.Sprite(fight.textureNext);
+	fight.speedButton = new PIXI.Sprite(fight.textureSpeed);
 	
-	var buttons = [Tacticode.Fight.nextButton, Tacticode.Fight.pauseButton,
-		Tacticode.Fight.stopButton, Tacticode.Fight.prevButton,
-		Tacticode.Fight.speedButton];
+	var buttons = [fight.nextButton, fight.pauseButton,
+		fight.stopButton, fight.prevButton,
+		fight.speedButton];
 	var positions = [16, 48, 80, 112, 144];
 	var rotations = [0, 0, 0, Math.PI, 0];
-	var actions = [Tacticode.Fight.next, Tacticode.Fight.pause,
-		Tacticode.Fight.stop, Tacticode.Fight.prev,
-		Tacticode.Fight.speed];
+	var actions = [fight.next, fight.pause,
+		fight.stop, fight.prev,
+		fight.speed];
 	var x = Tacticode.GAME_WIDTH;
 	for (var i = 0; i < buttons.length; i++){
 		var b = buttons[i];
@@ -107,64 +86,80 @@ Tacticode.Fight.initButtons = function(){
 		b.x = Tacticode.GAME_WIDTH - positions[i];
 		b.y = Tacticode.GAME_HEIGHT - 17;
 		b.on("mousedown", actions[i])
-		.on("mouseover", Tacticode.Fight.buttonMouseOver(b))
-		.on("mouseout", Tacticode.Fight.buttonMouseOut(b));
+		.on("mouseover", fight.buttonMouseOver(b))
+		.on("mouseout", fight.buttonMouseOut(b));
 	}
+	
+	fight.speedText = fight.initText(fight.speedButton.x - 35, fight.speedButton.y);
+}
+
+Tacticode.Fight.initText = function(x, y) {
+	var text = new PIXI.Text("x1", {
+		font : "bold 24px Arial",
+		fill : 0x000000,
+	});
+	console.log("x:"+x+"y:"+y);
+	text.x = x;
+	text.y = y;
+	text.anchor.set(0.5, 0.5);
+	Tacticode.stage.addChild(text);
+	return text;
 }
 
 Tacticode.Fight.mainLoop = function* (){
-	var data = Tacticode.Fight.fightData;
+	var fight = Tacticode.Fight;
+	var data = fight.fightData;
 	
 	if (data.actions.length === 0) return;
 	
 	while (true){
 		// saving entity information to go back in the animation
-		if (Tacticode.Fight.currentAction == Tacticode.Fight.undoData.length)
-			Tacticode.Fight.undoData.push(Tacticode.entities.backupEntity(data.actions[Tacticode.Fight.currentAction]));
-		var animation = Tacticode.entities.animateAction(data.actions[Tacticode.Fight.currentAction]);
+		if (fight.currentAction == fight.undoData.length)
+			fight.undoData.push(Tacticode.entities.backupEntity(data.actions[fight.currentAction]));
+		var animation = Tacticode.entities.animateAction(data.actions[fight.currentAction]);
 		
 		do { // animate until a button is pressed or the current animation is over
-			while (!Tacticode.Fight.isPlaying
-				&& !Tacticode.Fight.skipPressed
-				&& !Tacticode.Fight.undoPressed
-				&& !Tacticode.Fight.stopPressed)
+			while (!fight.isPlaying
+				&& !fight.skipPressed
+				&& !fight.undoPressed
+				&& !fight.stopPressed)
 				yield null; // pause
-			if (Tacticode.Fight.undoPressed || Tacticode.Fight.stopPressed)
+			if (fight.undoPressed || fight.stopPressed)
 				break;
-			if (!Tacticode.Fight.skipPressed)
+			if (!fight.skipPressed)
 				yield null;
 		} while (!animation.next().done);
-		if (Tacticode.Fight.skipPressed){ // next button pressed
-			if (Tacticode.Fight.currentAction < data.actions.length - 1)
-				++Tacticode.Fight.currentAction;
-			while (Tacticode.Fight.currentAction < data.actions.length - 1 && Tacticode.Fight.isCurrentActionInstant())
-				++Tacticode.Fight.currentAction;
-			Tacticode.Fight.skipPressed = false;
+		if (fight.skipPressed){ // next button pressed
+			if (fight.currentAction < data.actions.length - 1)
+				++fight.currentAction;
+			while (fight.currentAction < data.actions.length - 1 && fight.isCurrentActionInstant())
+				++fight.currentAction;
+			fight.skipPressed = false;
 			Tacticode.projectiles.clear();
 		}
-		else if (Tacticode.Fight.undoPressed){ // undo button pressed
-			Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[Tacticode.Fight.currentAction]);
-			if (Tacticode.Fight.currentAction > 0)
-				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
-			while (Tacticode.Fight.currentAction > 0 && Tacticode.Fight.isCurrentActionInstant())
-				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[--Tacticode.Fight.currentAction]);
-			Tacticode.Fight.undoPressed = false;
+		else if (fight.undoPressed){ // undo button pressed
+			Tacticode.entities.undoEntityAnimation(fight.undoData[fight.currentAction]);
+			if (fight.currentAction > 0)
+				Tacticode.entities.undoEntityAnimation(fight.undoData[--fight.currentAction]);
+			while (fight.currentAction > 0 && fight.isCurrentActionInstant())
+				Tacticode.entities.undoEntityAnimation(fight.undoData[--fight.currentAction]);
+			fight.undoPressed = false;
 			Tacticode.projectiles.clear();
 		}
-		else if (Tacticode.Fight.stopPressed){ // stop button pressed
-			while (Tacticode.Fight.currentAction >= 0)
-				Tacticode.entities.undoEntityAnimation(Tacticode.Fight.undoData[Tacticode.Fight.currentAction--]);
-			Tacticode.Fight.currentAction = 0;
-			if (Tacticode.Fight.isPlaying)
-				Tacticode.Fight.pause();
-			Tacticode.Fight.stopPressed = false;
+		else if (fight.stopPressed){ // stop button pressed
+			while (fight.currentAction >= 0)
+				Tacticode.entities.undoEntityAnimation(fight.undoData[fight.currentAction--]);
+			fight.currentAction = 0;
+			if (fight.isPlaying)
+				fight.pause();
+			fight.stopPressed = false;
 			Tacticode.projectiles.clear();
 		}
 		else{
-			if (Tacticode.Fight.currentAction < data.actions.length - 1)
-				++Tacticode.Fight.currentAction;
-			else if (Tacticode.Fight.isPlaying)
-				Tacticode.Fight.pause();
+			if (fight.currentAction < data.actions.length - 1)
+				++fight.currentAction;
+			else if (fight.isPlaying)
+				fight.pause();
 		}
 	}
 }
@@ -178,12 +173,13 @@ Tacticode.Fight.isCurrentActionInstant = function () {
 };
 
 Tacticode.Fight.play = function (data) {
-	Tacticode.Fight.fightData = data;
-	Tacticode.loadMap(Tacticode.Fight.fightData.map, function () {
-		Tacticode.entities.loadEntities(Tacticode.Fight.fightData.entities, Tacticode.map, function() {
+	var fight = Tacticode.Fight;
+	fight.fightData = data;
+	Tacticode.loadMap(fight.fightData.map, function () {
+		Tacticode.entities.loadEntities(fight.fightData.entities, Tacticode.map, function() {
 			Tacticode.animateFight = function* () {
-				Tacticode.Fight.initButtons();
-				yield* Tacticode.Fight.mainLoop();
+				fight.initButtons();
+				yield* fight.mainLoop();
 			}();
 		});
 	});
