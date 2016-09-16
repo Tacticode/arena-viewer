@@ -10,6 +10,7 @@ textures:
 	7:attack ne
 */
 
+
 Tacticode.Entity = function(entity, animator, callback) {
 	this.id = entity.id;
 	this.x = entity.x;
@@ -24,7 +25,12 @@ Tacticode.Entity = function(entity, animator, callback) {
 	
 	this.team = entity.team;
 	this.health = entity.health;
+	this.name = entity.name || this.randomName();
 	this.weapon = entity.weapon || "sword1";
+	this.container = new PIXI.Container();
+	Tacticode.entities.container.addChild(this.container);
+	this.text = this.initText();
+	console.log(this.text);
 	var e = this;
 	// this.textures = this.breed.defaultTextures;
 	Tacticode.CustomTexture.entityTexture(this, function(textures) {
@@ -33,17 +39,42 @@ Tacticode.Entity = function(entity, animator, callback) {
 		e.sprite = new PIXI.Sprite(e.textures[0]);
 		e.sprite.anchor.x = 0.5;
 		e.sprite.anchor.y = 0.5;
-		Tacticode.entities.container.addChild(e.sprite);
+		// Tacticode.entities.container.addChild(e.sprite);
+		e.container.addChild(e.sprite);
 		e.updateSpritePos();
 		callback();
 	});
 	this.animator = animator;
 }
 
+Tacticode.Entity.FONT = "bold 16px Arial";
+Tacticode.Entity.TEXT_COLOR = ["blue", "red"];
+
+Tacticode.Entity.prototype.initText = function() {
+	var text = new PIXI.Text(this.name, {
+		font : Tacticode.Entity.FONT,
+		fill : Tacticode.Entity.TEXT_COLOR[this.team],
+		dropShadow : true,
+		dropShadowColor : 0x000000,
+		dropShadowDistance : 2
+	});
+	text.x = 0;
+	text.y = -40;
+	text.anchor.set(0.5, 0.5);
+	this.container.addChild(text);
+}
+
+Tacticode.Entity.prototype.randomName = function() {
+	var names = ["Toto", "Titi", "Tutu", "Tata"];
+	return names[Math.floor(Math.random() * names.length)];
+}
+
 Tacticode.Entity.prototype.updateSpritePos = function() {
 	var coords = Tacticode.Map.mapToProjection(this.x, this.y, this.z);
-    this.sprite.x = coords[0] + Tacticode.GAME_WIDTH / 2;
-    this.sprite.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
+    /*this.sprite.x = coords[0] + Tacticode.GAME_WIDTH / 2;
+    this.sprite.y = coords[1] + Tacticode.GAME_HEIGHT / 4;*/
+    this.container.x = coords[0] + Tacticode.GAME_WIDTH / 2;
+    this.container.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
 	
 	/*var darkness = 0xFF - this.z * 15;
     this.sprite.tint = (darkness << 16) + (darkness << 8) + darkness;*/
@@ -154,7 +185,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		return;
 	}
 	if (action.type == "death") {
-		entity.sprite.renderable = false;
+		entity.container.renderable = false;
 		return;
 	}
 	
@@ -199,6 +230,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 Tacticode.EntityAnimator.prototype.backupEntity = function(action){
 	var entity = this.entities[action.entity];
 	var sprite = entity.sprite;
+	var container = entity.container;
 	return {
 		entity:entity,
 		x:entity.x,
@@ -206,21 +238,22 @@ Tacticode.EntityAnimator.prototype.backupEntity = function(action){
 		z:entity.z,
 		health:entity.health,
 		texture:sprite.texture,
-		pixelX:sprite.x,
-		pixelY:sprite.y,
-		alive:sprite.renderable
+		pixelX:container.x,
+		pixelY:container.y,
+		alive:container.renderable
 	};
 }
 
 Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
 	var entity = backup.entity;
 	var sprite = entity.sprite;
+	var container = entity.container;
 	entity.x = backup.x;
 	entity.y = backup.y;
 	entity.z = backup.z;
 	entity.health = backup.health;
 	sprite.texture = backup.texture;
-	sprite.x = backup.pixelX;
-	sprite.y = backup.pixelY;
-	sprite.renderable = backup.alive;
+	container.x = backup.pixelX;
+	container.y = backup.pixelY;
+	container.renderable = backup.alive;
 }
