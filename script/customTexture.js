@@ -1,3 +1,9 @@
+/**
+ * Tacticode - Custom Texture
+ */
+
+"use strict"
+
 /*
 default frame size: 64x64 pixels
 
@@ -11,10 +17,9 @@ directions:
 	nw, ne, se, sw
 */
 
-Tacticode.CustomTexture = function(width = 64, height = 64, frame = null){
+Tacticode.CustomTexture = function(width = 64, height = 64){
 	this.width = width;
 	this.height = height;
-	this.frame = frame;
 	this.textures = [];
 	this.container = new PIXI.Container();
 }
@@ -35,7 +40,6 @@ Tacticode.CustomTexture.prototype.add = function(texture, tint = 0xFFFFFF, scale
 }
 
 Tacticode.CustomTexture.prototype.addPart = function(part, frame, tint = 0xFFFFFF){
-	//console.log(part);
 	var animation = Math.floor(frame / 4);
 	var direction = frame % 4;
 	var animationNames = ["stand", "attack"];
@@ -220,7 +224,7 @@ Tacticode.CustomTexture.entityTexture = function(entity, callback = None){
 	var hair = selection(breedData.hair);
 	var clothesTypes = selection(breedData.clothes)
 	var clothes = []
-	for (t of clothesTypes)
+	for (var t of clothesTypes)
 		clothes.push({t: t,
 			c: selection(breedData.clothesColors)})
 	var armor = selection(breedData.armor);
@@ -236,7 +240,7 @@ Tacticode.CustomTexture.entityTexture = function(entity, callback = None){
 	var f = 0;
 	var gen1 = function(gen2){
 		//console.log("gen1");
-		var tmp = new Tacticode.CustomTexture(frame = f)
+		var tmp = new Tacticode.CustomTexture()
 			.addPart(body, f, skinColor)
 			.addPart(eyes, f, eyesColor)
 			.addPart(face, f)

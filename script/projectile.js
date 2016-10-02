@@ -1,3 +1,9 @@
+/**
+ * Tacticode - Projectile
+ */
+
+"use strict"
+
 Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 	this.start = startPosition;
 	this.end = endPosition;
@@ -108,8 +114,6 @@ Tacticode.ProjectilesAnimator.prototype.clear = function() {
 }
 
 Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPosition, type) {
-	/*console.log("add projectile " + startPosition.x + " " + startPosition.y + " "
-		+ endPosition.x + " " + endPosition.y + " " + type.name);*/
 	var projectile = new Tacticode.Projectile(startPosition, endPosition, type, this);
 	this.projectiles.push(projectile);
 	this.container.addChild(projectile.sprite);
@@ -118,7 +122,7 @@ Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPositio
 
 Tacticode.ProjectilesAnimator.prototype.addWithString = function(startPosition, endPosition, typeStr) {
 	var type = null;
-	for (t in Tacticode.Projectile.Type)
+	for (var t in Tacticode.Projectile.Type)
 		if (Tacticode.Projectile.Type[t].name == typeStr)
 			type = Tacticode.Projectile.Type[t];
 	if (!type) type = Tacticode.Projectile.Type.Ice;

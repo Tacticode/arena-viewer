@@ -1,4 +1,10 @@
-/*
+/**
+ * Tacticode - Entity
+ */
+
+"use strict"
+
+ /*
 textures:
 	0:sw
 	1:se
