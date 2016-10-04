@@ -23,6 +23,7 @@ Tacticode.init = function (parent) {
 	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.cellInformation = new Tacticode.CellInformation(Tacticode.stage);
 	Tacticode.overlayManager = new Tacticode.OverlayManager(Tacticode.stage);
+	Tacticode.turnManager = new Tacticode.TurnManager(Tacticode.stage);
 	Tacticode.sound = new SoundManager(Tacticode.ASSETS_PATH + 'sound/');
 	Tacticode.sound.register('swing', 'swing.wav', 2);
 	Tacticode.sound.register('impact', 'impactWood.ogg', 2);
@@ -62,6 +63,7 @@ Tacticode.loadMap = function (mapData, callback) {
 Tacticode.update = function () {
 	Tacticode.projectiles.animate();
 	Tacticode.overlayManager.update();
+	Tacticode.turnManager.update();
 	if (Tacticode.animateFight) {
 		Tacticode.animateFight.next();
 	}

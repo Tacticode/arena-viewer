@@ -160,13 +160,16 @@ var fight = {
 		{"id": 22, "x": 1, "y": 3, "breed": "orc", "team": 0, "name":"Korgak", "health": 800},
 		{"id": 2, "x": 4, "y": 2, "breed": "elf", "team": 0, "name":"Falael", "health": 600, "weapon": "bow1"}
 	],
+	"winner": 1,
 	"actions" : [
+		{"type": "newturn", "turn": 1},
 		{"type": "move", "entity": 22, "x": 2, "y": 3},
 		{"type": "move", "entity": 22, "x": 2, "y": 4},
 		{"type": "skill", "entity": 957, "skill": "FIREBALL", "x": 4, "y": 2},
 		{"type": "heal", "entity": 957, "health": 51},
 		{"type": "damage", "entity": 2, "health": 51},
 
+		{"type": "newturn", "turn": 2},
 		{"type": "move", "entity": 2, "x": 4, "y": 3},
 		{"type": "skill", "entity": 2, "skill": "nonexisting", "x": 4, "y": 3},
 		{"type": "heal", "entity": 2, "health": 28817},
@@ -174,11 +177,13 @@ var fight = {
 		{"type": "damage", "entity": 22, "health": 179},
 		{"type": "heal", "entity": 2, "health": 179},
 		
+		{"type": "newturn", "turn": 3},
 		{"type": "move", "entity": 2, "x": 4, "y": 2},
 		{"type": "skill", "entity": 2, "skill": "FIREBALL", "x": 0, "y": 4},
 		{"type": "move", "entity": 2, "x": 4, "y": 1},
 		{"type": "skill", "entity": 2, "skill": "FIREBALL", "x": 4, "y": 0},
 		
+		{"type": "newturn", "turn": 4},
 		{"type": "skill", "entity": 2, "skill": "FIREBALL", "x": 1, "y": 2},
 		{"type": "damage", "entity": 957, "health": 617},
 		{"type": "skill", "entity": 2, "skill": "FIREBALL", "x": 1, "y": 2},

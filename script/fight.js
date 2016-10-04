@@ -117,11 +117,11 @@ Tacticode.Fight.mainLoop = function* (){
 	
 	if (data.actions.length === 0) return;
 	
+	fight.currentTurn = 1;
+	
 	while (true){
 		// saving entity information to go back in the animation
-		if (fight.currentAction == fight.undoData.length)
-			fight.undoData.push(Tacticode.entities.backupEntity(data.actions[fight.currentAction]));
-		var animation = Tacticode.entities.animateAction(data.actions[fight.currentAction]);
+		var animation = fight.animateAction(data);
 		
 		do { // animate until a button is pressed or the current animation is over
 			while (!fight.isPlaying
@@ -143,18 +143,12 @@ Tacticode.Fight.mainLoop = function* (){
 			Tacticode.projectiles.clear();
 		}
 		else if (fight.undoPressed){ // undo button pressed
-			Tacticode.entities.undoEntityAnimation(fight.undoData[fight.currentAction]);
-			if (fight.currentAction > 0)
-				Tacticode.entities.undoEntityAnimation(fight.undoData[--fight.currentAction]);
-			while (fight.currentAction > 0 && fight.isCurrentActionInstant())
-				Tacticode.entities.undoEntityAnimation(fight.undoData[--fight.currentAction]);
+			fight.undoActions();
 			fight.undoPressed = false;
 			Tacticode.projectiles.clear();
 		}
 		else if (fight.stopPressed){ // stop button pressed
-			while (fight.currentAction >= 0)
-				Tacticode.entities.undoEntityAnimation(fight.undoData[fight.currentAction--]);
-			fight.currentAction = 0;
+			fight.undoAllActions();
 			if (fight.isPlaying)
 				fight.pause();
 			fight.stopPressed = false;
@@ -169,9 +163,60 @@ Tacticode.Fight.mainLoop = function* (){
 	}
 }
 
+Tacticode.Fight.animateAction = function* () {
+	var fight = Tacticode.Fight;
+	var data = fight.fightData;
+	var action = data.actions[fight.currentAction];
+	if (action.entity) {
+		// entity action
+		if (fight.currentAction == fight.undoData.length)
+			fight.undoData.push(Tacticode.entities.backupEntity(action));
+		yield* Tacticode.entities.animateAction(action);
+	} else {
+		// general action
+		fight.undoData.push({
+			'turn': fight.currentTurn
+		});
+		if (action.type == 'newturn') {
+			fight.currentTurn = action.turn;
+			Tacticode.turnManager.setTurn(fight.currentTurn, true);
+		}
+	}
+}
+
+Tacticode.Fight.undoActions = function () {
+	var fight = Tacticode.Fight;
+	if (fight.currentAction > 0)
+		fight.undoAction();
+	if (fight.currentAction > 0)
+		fight.undoAction();
+	while (fight.currentAction > 0 && fight.isCurrentActionInstant())
+		fight.undoAction();
+}
+
+Tacticode.Fight.undoAllActions = function () {
+	var fight = Tacticode.Fight;
+	while (fight.currentAction >= 0)
+		fight.undoAction();
+	fight.currentAction = 0;
+}
+
+Tacticode.Fight.undoAction = function () {
+	var fight = Tacticode.Fight;
+	if (fight.undoData[fight.currentAction].entity) {
+		// entity action
+		Tacticode.entities.undoEntityAnimation(fight.undoData[fight.currentAction--]);
+	} else {
+		// general action
+		var backup = fight.undoData[fight.currentAction--];
+		fight.currentTurn = backup.turn;
+		Tacticode.turnManager.setTurn(backup.turn, false);
+	}
+}
+
 Tacticode.Fight.isCurrentActionInstant = function () {
 	var type = Tacticode.Fight.fightData.actions[Tacticode.Fight.currentAction].type;
-	if (type == 'damage' || type == 'heal' || type == 'death') {
+	if (type == 'damage' || type == 'heal' || type == 'death' || type == 'newturn') {
 		return true;
 	}
 	return false;
