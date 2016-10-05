@@ -115,9 +115,15 @@ Tacticode.Fight.mainLoop = function* (){
 	var fight = Tacticode.Fight;
 	var data = fight.fightData;
 	
+	data.actions.push({
+		'type': 'winner',
+		'winner': data.winner
+	})
+	
 	if (data.actions.length === 0) return;
 	
 	fight.currentTurn = 1;
+	fight.currentWinner = null;
 	
 	while (true){
 		// saving entity information to go back in the animation
@@ -175,11 +181,16 @@ Tacticode.Fight.animateAction = function* () {
 	} else {
 		// general action
 		fight.undoData.push({
-			'turn': fight.currentTurn
+			'turn': fight.currentTurn,
+			'winner': fight.currentWinner
 		});
 		if (action.type == 'newturn') {
 			fight.currentTurn = action.turn;
 			Tacticode.turnManager.setTurn(fight.currentTurn, true);
+		}
+		if (action.type == 'winner') {
+			fight.currentWinner = action.winner;
+			// Tacticode.winnerManager.setWinner(fight.currentWinner); // TODO display something
 		}
 	}
 }
@@ -210,13 +221,14 @@ Tacticode.Fight.undoAction = function () {
 		// general action
 		var backup = fight.undoData[fight.currentAction--];
 		fight.currentTurn = backup.turn;
+		fight.currentWinner = backup.winner;
 		Tacticode.turnManager.setTurn(backup.turn, false);
 	}
 }
 
 Tacticode.Fight.isCurrentActionInstant = function () {
 	var type = Tacticode.Fight.fightData.actions[Tacticode.Fight.currentAction].type;
-	if (type == 'damage' || type == 'heal' || type == 'death' || type == 'newturn') {
+	if (type == 'damage' || type == 'heal' || type == 'death' || type == 'newturn' || type == 'winner') {
 		return true;
 	}
 	return false;
