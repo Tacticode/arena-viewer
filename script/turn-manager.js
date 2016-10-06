@@ -5,7 +5,7 @@
 "use strict";
 
 Tacticode.TurnManager = function (stage) {
-	this.turnText = new PIXI.Text('Turn 1', {
+	this.turnText = new PIXI.Text('TURN 1', {
 		font : '24px Helvetica',
 		fill : 0x080808
 	});
@@ -17,7 +17,7 @@ Tacticode.TurnManager = function (stage) {
 };
 
 Tacticode.TurnManager.prototype.setTurn = function (turn, animate) {
-	this.turnText.text = 'Turn ' + turn;
+	this.turnText.text = 'TURN ' + turn;
 	this._currentTurn = turn;
 	if (animate) {
 		this._currentFontWidth = 48;
