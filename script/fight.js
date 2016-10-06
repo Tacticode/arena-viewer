@@ -185,7 +185,7 @@ Tacticode.Fight.animateAction = function* () {
 		}
 		if (action.type == 'winner') {
 			fight.currentWinner = action.winner;
-			// Tacticode.winnerManager.setWinner(fight.currentWinner); // TODO display something
+			Tacticode.winnerManager.setWinner(fight.currentWinner);
 		}
 	}
 }
@@ -218,6 +218,7 @@ Tacticode.Fight.undoAction = function () {
 		fight.currentTurn = backup.turn;
 		fight.currentWinner = backup.winner;
 		Tacticode.turnManager.setTurn(backup.turn, false);
+		Tacticode.winnerManager.setWinner(fight.currentWinner);
 	}
 }
 

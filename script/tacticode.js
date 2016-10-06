@@ -24,6 +24,7 @@ Tacticode.init = function (parent) {
 	Tacticode.cellInformation = new Tacticode.CellInformation(Tacticode.stage);
 	Tacticode.overlayManager = new Tacticode.OverlayManager(Tacticode.stage);
 	Tacticode.turnManager = new Tacticode.TurnManager(Tacticode.stage);
+	Tacticode.winnerManager = new Tacticode.WinnerManager(Tacticode.stage);
 	Tacticode.sound = new SoundManager(Tacticode.ASSETS_PATH + 'sound/');
 	Tacticode.sound.register('swing', 'swing.wav', 2);
 	Tacticode.sound.register('impact', 'impactWood.ogg', 2);
