@@ -1,3 +1,9 @@
+/**
+ * Tacticode - Fight
+ */
+
+"use strict"
+
 Tacticode.Fight = {};
 
 Tacticode.Fight.pause = function(){
@@ -98,7 +104,6 @@ Tacticode.Fight.initText = function(x, y) {
 		font : "bold 24px Arial",
 		fill : 0x000000,
 	});
-	console.log("x:"+x+"y:"+y);
 	text.x = x;
 	text.y = y;
 	text.anchor.set(0.5, 0.5);

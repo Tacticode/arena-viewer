@@ -1,15 +1,8 @@
-/*
-textures:
-	0:sw
-	1:se
-	2:nw
-	3:ne
-	4:attack sw
-	5:attack se
-	6:attack nw
-	7:attack ne
-*/
+/**
+ * Tacticode - Entity
+ */
 
+"use strict"
 
 Tacticode.Entity = function(entity, animator, callback) {
 	this.id = entity.id;
@@ -139,28 +132,10 @@ Tacticode.Entity.prototype.updateSpriteAttack = function(attack = true){
 	this.sprite.texture = this.textures[this.textureId];
 }
 
-/*Tacticode.Entity.Textures = {
-	Test:{name:"test",
-	ul:PIXI.Texture.fromImage("assets/test/character_ul.png"),
-	ur:PIXI.Texture.fromImage("assets/test/character_ur.png"),
-	dl:PIXI.Texture.fromImage("assets/test/character_dl.png"),
-	dr:PIXI.Texture.fromImage("assets/test/character_dr.png")},
-	Orc1:{name:"orc1",
-	ul:PIXI.Texture.fromImage("assets/sprites/character/orc1/orc1_ul.png"),
-	ur:PIXI.Texture.fromImage("assets/sprites/character/orc1/orc1_ur.png"),
-	dl:PIXI.Texture.fromImage("assets/sprites/character/orc1/orc1_dl.png"),
-	dr:PIXI.Texture.fromImage("assets/sprites/character/orc1/orc1_dr.png")},
-	Elf1:{name:"elf1",
-	ul:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_ul.png"),
-	ur:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_ur.png"),
-	dl:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_dl.png"),
-	dr:PIXI.Texture.fromImage("assets/sprites/character/elf1/elf1_dr.png")}
-}*/
-
 Tacticode.Entity.Breed = {
-	Human:{name:"human"},//, defaultTextures:Tacticode.Entity.Textures.Test},
-	Orc:{name:"orc"},//, defaultTextures:Tacticode.Entity.Textures.Orc1},
-	Elf:{name:"elf"}//, defaultTextures:Tacticode.Entity.Textures.Elf1}
+	Human:{name:"human"},
+	Orc:{name:"orc"},
+	Elf:{name:"elf"}
 }
 
 Tacticode.Entity.prototype.debug = function() {
@@ -172,6 +147,10 @@ Tacticode.Entity.prototype.debug = function() {
 	console.log("breed:" + this.breed.name);
 	console.log("team:" + this.team);
 }
+
+/**
+ * Tacticode - Entity Animator
+ */
 
 Tacticode.EntityAnimator = function (stage) {
 	this.container = new PIXI.Container();

@@ -1,3 +1,9 @@
+/**
+ * Tacticode - Projectile
+ */
+
+"use strict"
+
 Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 	this.start = startPosition;
 	this.end = endPosition;
@@ -30,24 +36,6 @@ Tacticode.Projectile.randomMove = function(startPos, length){
 			y: startPos.y + Tacticode.randomInt(-length, length)}
 }
 
-Tacticode.Projectile.Type = {
-	FireParticle:{name:"FireParticle", speed:4, orientedTexture:false,
-			texturePath:"effect/particle_fire.png",
-			particleType:null},
-	IceParticle:{name:"IceParticle", speed:3, orientedTexture:false,
-			texturePath:"effect/particle_ice.png",
-			particleType:null},
-	Arrow:{name:"ARROW", speed:6, orientedTexture:true,
-			texturePath:"effect/arrow.png",
-			particleType:null},
-	Fire:{name:"FIREBALL", speed:15, orientedTexture:false,
-			texturePath:"effect/fireball.png",
-			particleType:"FireParticle", particleDistance:75},
-	Ice:{name:"ICEBALL", speed:8, orientedTexture:false,
-			texturePath:"effect/iceball.png",
-			particleType:"IceParticle", particleDistance:30}
-}
-
 Tacticode.Projectile.prototype.particleEffect = function() {
 	if (this.currentFrame > this.nbFrames){
 		for (var i = 0; i < 10; i++){
@@ -72,6 +60,10 @@ Tacticode.Projectile.prototype.update = function() {
 		this.particleEffect();
 }
 
+/**
+ * Tacticode - Projectile Animator
+ */
+ 
 Tacticode.ProjectilesAnimator = function(container) {
 	this.loadTextures();
 	this.container = container;
@@ -108,8 +100,6 @@ Tacticode.ProjectilesAnimator.prototype.clear = function() {
 }
 
 Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPosition, type) {
-	/*console.log("add projectile " + startPosition.x + " " + startPosition.y + " "
-		+ endPosition.x + " " + endPosition.y + " " + type.name);*/
 	var projectile = new Tacticode.Projectile(startPosition, endPosition, type, this);
 	this.projectiles.push(projectile);
 	this.container.addChild(projectile.sprite);
@@ -118,7 +108,7 @@ Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPositio
 
 Tacticode.ProjectilesAnimator.prototype.addWithString = function(startPosition, endPosition, typeStr) {
 	var type = null;
-	for (t in Tacticode.Projectile.Type)
+	for (var t in Tacticode.Projectile.Type)
 		if (Tacticode.Projectile.Type[t].name == typeStr)
 			type = Tacticode.Projectile.Type[t];
 	if (!type) type = Tacticode.Projectile.Type.Ice;
