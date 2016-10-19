@@ -156,9 +156,9 @@ var fight = {
     ]
 },
 	"entities": [
-		{"id": 957, "x": 1, "y": 2, "breed": "orc", "team": 1, "name":"Murbag", "health": 1000, "weapon": "staff1"},
-		{"id": 22, "x": 1, "y": 3, "breed": "orc", "team": 0, "name":"Korgak", "health": 800},
-		{"id": 2, "x": 4, "y": 2, "breed": "elf", "team": 0, "name":"Falael", "health": 600, "weapon": "bow1"}
+		{"id": 957, "x": 1, "y": 2, "breed": "orc", "team": 81, "name":"Murbag", "health": 1000, "weapon": "staff1"},
+		{"id": 22, "x": 1, "y": 3, "breed": "orc", "team": 17, "name":"Korgak", "health": 800},
+		{"id": 2, "x": 4, "y": 2, "breed": "elf", "team": 17, "name":"Falael", "health": 600, "weapon": "bow1"}
 	],
 	"winner": 1,
 	"actions" : [

@@ -16,7 +16,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 			break;
 		}
 	
-	this.team = entity.team;
+	this.team = animator.getTeamIndex(entity.team);
 	this.health = entity.health;
 	this.maxHealth = this.health;
 	this.name = entity.name || this.randomName();
@@ -156,6 +156,10 @@ Tacticode.EntityAnimator = function (stage) {
 	this.container = new PIXI.Container();
 	this.entities = {};
 	this.map = null;
+
+	this.teams = {};
+	this.currentTeamIndex = 0;
+
 	stage.addChild(this.container);
 }
 
@@ -274,4 +278,11 @@ Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
 	container.y = backup.pixelY;
 	container.renderable = backup.alive;
 	entity.updateHealthBar();
+}
+
+Tacticode.EntityAnimator.prototype.getTeamIndex = function (team) {
+	if (!this.teams[team]) {
+		this.teams[team] = this.currentTeamIndex++;
+	}
+	return this.teams[team];
 }
