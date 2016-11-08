@@ -1,0 +1,19 @@
+{
+  "name": "arena-viewer",
+  "private": true,
+  "scripts": {
+    "build": "node node_modules/gulp/bin/gulp.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paul-maxime/arena-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/paul-maxime/arena-viewer/issues"
+  },
+  "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0"
+  }
+}
