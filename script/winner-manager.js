@@ -4,6 +4,11 @@
 
 "use strict";
 
+/**
+ * Creates a new WinnerManager, used to display the winner at the end of the fight.
+ * @constructor
+ * @param stage Pixi.js stage where the winner will be displayed.
+ */
 Tacticode.WinnerManager = function (stage) {
 	this.textWinner = new PIXI.Text('', {
 		font : '34px Helvetica',
@@ -18,6 +23,10 @@ Tacticode.WinnerManager = function (stage) {
 	stage.addChild(this.textWinner);
 };
 
+/**
+ * Displays the specified winner.
+ * @param {string} winner Name of the winner to display, null to hide the window.
+ */
 Tacticode.WinnerManager.prototype.setWinner = function (winner) {
 	if (winner === null) {
 		this.textWinner.text = '';
