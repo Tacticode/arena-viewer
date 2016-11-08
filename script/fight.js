@@ -189,11 +189,18 @@ Tacticode.Fight.animateAction = function* () {
 			Tacticode.turnManager.setTurn(fight.currentTurn, true);
 		}
 		if (action.type == 'winner') {
-			fight.currentWinner = action.winner;
+			fight.currentWinner = Tacticode.Fight.getPlayerNameFromId(action.winner);
 			Tacticode.winnerManager.setWinner(fight.currentWinner);
 		}
 	}
 }
+
+Tacticode.Fight.getPlayerNameFromId = function (id) {
+	for (let team of Tacticode.Fight.fightData.teams) {
+		if (team.id == id) return team.name;
+	}
+	return id;
+};
 
 Tacticode.Fight.undoActions = function () {
 	var fight = Tacticode.Fight;

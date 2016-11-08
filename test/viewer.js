@@ -160,7 +160,11 @@ var fight = {
 		{"id": 22, "x": 1, "y": 3, "breed": "orc", "team": 17, "name":"Korgak", "health": 800},
 		{"id": 2, "x": 4, "y": 2, "breed": "elf", "team": 17, "name":"Falael", "health": 600, "weapon": "bow1"}
 	],
-	"winner": 1,
+	"winner": 17,
+	"teams": [
+		{"id": 17, "name": "Something"},
+		{"id": 81, "name": "Foobar"}
+	],
 	"actions" : [
 		{"type": "newturn", "turn": 1},
 		{"type": "move", "entity": 22, "x": 2, "y": 3},
