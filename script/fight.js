@@ -197,7 +197,14 @@ Tacticode.Fight.animateAction = function* () {
 
 Tacticode.Fight.getPlayerNameFromId = function (id) {
 	for (let team of Tacticode.Fight.fightData.teams) {
-		if (team.id == id) return team.name;
+		if (team.id === id) {
+			if (team.name && team.name !== '') {
+				return team.name;
+			}
+			if (team.characters.length > 0) {
+				return team.characters[0].name;
+			}
+		}
 	}
 	return id;
 };
