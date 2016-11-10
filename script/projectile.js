@@ -4,6 +4,14 @@
 
 "use strict"
 
+/**
+ * Class Projectile
+ * @constructor
+ * @param startPosition starting position of the projectile
+ * @param endPosition ending position of the projectile
+ * @param type ProjectileType of the projectile
+ * @param animator ProjectileAnimator to use
+ */
 Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 	this.start = startPosition;
 	this.end = endPosition;
@@ -27,15 +35,30 @@ Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 		this.sprite.rotation = Math.atan2(y, x);
 }
 
+/**
+ * Get a random integer between 2 values
+ * @param min Minimum value
+ * @param max Maximum value
+ * @return The interger
+ */
 Tacticode.randomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+/**
+ * Get a random projectile move
+ * @param startPos Starting position of the projectile
+ * @param length Maximum length of the move
+ * @return The ending position of the move
+ */
 Tacticode.Projectile.randomMove = function(startPos, length){
 	return {x: startPos.x + Tacticode.randomInt(-length, length),
 			y: startPos.y + Tacticode.randomInt(-length, length)}
 }
 
+/**
+ * Generate particle effect of a projectile
+ */
 Tacticode.Projectile.prototype.particleEffect = function() {
 	if (this.currentFrame > this.nbFrames){
 		for (var i = 0; i < 10; i++){
@@ -51,6 +74,9 @@ Tacticode.Projectile.prototype.particleEffect = function() {
 	}
 }
 
+/**
+ * Update the position of the projectile
+ */
 Tacticode.Projectile.prototype.update = function() {
 	var progress = this.currentFrame / this.nbFrames;
 	this.sprite.position.x = this.start.x * (1 - progress) + this.end.x * progress;
@@ -64,12 +90,20 @@ Tacticode.Projectile.prototype.update = function() {
  * Tacticode - Projectile Animator
  */
  
+ /**
+  * Class ProjectileAnimator
+  * @constructor
+  * @param container Container of the animator
+  */
 Tacticode.ProjectilesAnimator = function(container) {
 	this.loadTextures();
 	this.container = container;
 	this.projectiles = [];
 }
 
+/**
+ * Load the textures of the projectiles
+ */
 Tacticode.ProjectilesAnimator.prototype.loadTextures = function () {
 	for (var particleType in Tacticode.Projectile.Type) {
 		var path = Tacticode.ASSETS_PATH + Tacticode.Projectile.Type[particleType].texturePath;
@@ -78,10 +112,18 @@ Tacticode.ProjectilesAnimator.prototype.loadTextures = function () {
 	};
 };
 
+/**
+ * Check if the projectile animation is over
+ * @param p the projectile
+ * @return true if the animation is over
+ */
 Tacticode.ProjectilesAnimator.checkDelete = function(p) {
 	return p.currentFrame <= p.nbFrames;
 }
 
+/**
+ * Animate all the projectiles of the animator
+ */
 Tacticode.ProjectilesAnimator.prototype.animate = function() {
 	if (!Tacticode.Fight.isPlaying)
 		return;
@@ -93,12 +135,21 @@ Tacticode.ProjectilesAnimator.prototype.animate = function() {
 	this.projectiles = this.projectiles.filter(Tacticode.ProjectilesAnimator.checkDelete); // TODO optimisation ?
 }
 
+/**
+ * Delete all the projectiles
+ */
 Tacticode.ProjectilesAnimator.prototype.clear = function() {
 	for (var p of this.projectiles)
 		this.container.removeChild(p.sprite);
 	this.projectiles = [];
 }
 
+/**
+ * Add a new projectile
+ * @param startPosition Starting position of the projectile
+ * @param endPosition Ending position of the projectile
+ * @param type Type of the projectile
+ */
 Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPosition, type) {
 	var projectile = new Tacticode.Projectile(startPosition, endPosition, type, this);
 	this.projectiles.push(projectile);
@@ -106,6 +157,12 @@ Tacticode.ProjectilesAnimator.prototype.add = function(startPosition, endPositio
 	return projectile.nbFrames + 1;
 }
 
+/**
+ * Add a new projectile from a string
+ * @param startPosition Starting position of the projectile
+ * @param endPosition Ending position of the projectile
+ * @param type Type of the projectile (string)
+ */
 Tacticode.ProjectilesAnimator.prototype.addWithString = function(startPosition, endPosition, typeStr) {
 	var type = null;
 	for (var t in Tacticode.Projectile.Type)

@@ -4,12 +4,19 @@
 
 "use strict"
 
+/**
+ * Class EntityPart
+ * @constructor
+ */
 Tacticode.CustomTexture.EntityPart = function(path, type, scale = 3/4){
 	this.path = path;
 	this.type = type;
 	this.scale = scale;
 }
 
+/**
+ * Entity types constants
+ */
 Tacticode.CustomTexture.EntityPart.types = {
 	IS_MIRRORED: 1, // nw and sw images are mirrored to make the ne and se images
 	SINGLE_IMAGE: 2, // all directions and animations are made from 1 image

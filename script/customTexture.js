@@ -1,7 +1,8 @@
 /**
  * Tacticode - Custom Texture
- *
- * animations:
+ */
+ 
+/* animations:
  *	stand
  *	attack
  *
@@ -17,11 +18,16 @@
  *	5:attack se
  *	6:attack nw
  *	7:attack ne
- *
  */
 
 "use strict"
 
+/**
+ * Creates a new CustomTexture
+ * @constructor
+ * @param width Width of the texture in pixels
+ * @param height Height of the texture in pixels
+ */
 Tacticode.CustomTexture = function(width = Tacticode.CustomTexture.DEFAULT_WIDTH,
 		height = Tacticode.CustomTexture.DEFAULT_HEIGHT){
 	this.width = width;
@@ -33,6 +39,16 @@ Tacticode.CustomTexture = function(width = Tacticode.CustomTexture.DEFAULT_WIDTH
 Tacticode.CustomTexture.DEFAULT_WIDTH = 64;
 Tacticode.CustomTexture.DEFAULT_HEIGHT = 64;
 
+/**
+ * Add an image to the custom texture
+ * @param texture Image added to the texture
+ * @param tint Value of the texture tint
+ * @param scale Size of the image
+ * @param mirrored The image is mirrored horizontaly if true
+ * @param x horizontal position of the image
+ * @param y vertical position of the image
+ * @return the custom texture
+ */
 Tacticode.CustomTexture.prototype.add = function(texture, tint = 0xFFFFFF, scale = 1, mirrored = false, x = 0, y = 0){
 	this.textures.push(texture);
 	var sprite = new PIXI.Sprite(texture);
@@ -48,6 +64,13 @@ Tacticode.CustomTexture.prototype.add = function(texture, tint = 0xFFFFFF, scale
 	return this;
 }
 
+/**
+ * Add a part to the custom texture
+ * @param part EntityPart added to the texture
+ * @param frame of the animation the part is added
+ * @param tint Value of the texture tint
+ * @return the custom texture
+ */
 Tacticode.CustomTexture.prototype.addPart = function(part, frame, tint = 0xFFFFFF){
 	var animation = Math.floor(frame / 4);
 	var direction = frame % 4;
@@ -77,6 +100,10 @@ Tacticode.CustomTexture.prototype.addPart = function(part, frame, tint = 0xFFFFF
 	return this.add(PIXI.Texture.fromImage(file), tint, part.scale, mirrored);
 }
 
+/**
+ * Generate the custom texture
+ * @param callback Function called with the texture as parameter after the generation
+ */
 Tacticode.CustomTexture.prototype.generate = function(callback){
 	var renderer = new PIXI.CanvasRenderer(this.width, this.height);
 	renderer.transparent = true;
@@ -98,6 +125,10 @@ Tacticode.CustomTexture.prototype.generate = function(callback){
 	load();
 }
 
+/**
+ * Clear the custom texture
+ * @param destroyTextures destroy all loaded textures
+ */
 Tacticode.CustomTexture.prototype.clear = function(destroyTextures = false){
 	this.container.removeChildren();
 	if (destroyTextures)
@@ -106,6 +137,10 @@ Tacticode.CustomTexture.prototype.clear = function(destroyTextures = false){
 	this.textures = [];
 }
 
+/**
+ * Destroy the custom texture
+ * @param destroyTextures destroy all loaded textures
+ */
 Tacticode.CustomTexture.prototype.destroy = function(destroyTextures = false){
 	this.container.destroy(true);
 	if (destroyTextures)
@@ -113,6 +148,10 @@ Tacticode.CustomTexture.prototype.destroy = function(destroyTextures = false){
 			texture.destroy();
 }
 
+/**
+ * Get a random color of the format 0xRRGGBB
+ * @return the random color
+ */
 Tacticode.CustomTexture.randomColor = function(){
 	return Math.floor(Math.random() * 0x1000000);
 }
@@ -125,6 +164,11 @@ Tacticode.CustomTexture.randomSelection = function(data){
 	return data;
 }
 
+/**
+ * generate textures for an entity
+ * @param entity Character the textures will be based on
+ * @param callback Function called after the generation, take the texture array as a parameter
+ */
 Tacticode.CustomTexture.entityTexture = function(entity, callback = None){
 	var textures = [];
 	var selection = Tacticode.CustomTexture.randomSelection;

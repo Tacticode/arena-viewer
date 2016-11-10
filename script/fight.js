@@ -6,6 +6,9 @@
 
 Tacticode.Fight = {};
 
+/**
+ * Pause the fight animation
+ */
 Tacticode.Fight.pause = function(){
 	if (Tacticode.Fight.isPlaying)
 		Tacticode.Fight.pauseButton.texture = Tacticode.Fight.texturePlay;
@@ -14,18 +17,30 @@ Tacticode.Fight.pause = function(){
 	Tacticode.Fight.isPlaying = !Tacticode.Fight.isPlaying;
 }
 
+/**
+ * Stop the fight animation
+ */
 Tacticode.Fight.stop = function(){
 	Tacticode.Fight.stopPressed = true;
 }
 
+/**
+ * Skip the current fight animation
+ */
 Tacticode.Fight.next = function(){
 	Tacticode.Fight.skipPressed = true;
 }
 
+/**
+ * Go back to previous fight animation
+ */
 Tacticode.Fight.prev = function(){
 	Tacticode.Fight.undoPressed = true;
 }
 
+/**
+ * Change fight animation speed
+ */
 Tacticode.Fight.speed = function(){
 	if (Tacticode.speed > 2)
 		Tacticode.speed = 1;
@@ -34,6 +49,11 @@ Tacticode.Fight.speed = function(){
 	Tacticode.Fight.speedText.text = "x" + Tacticode.speed;
 }
 
+/**
+ * Animation when moving the mouse over a button
+ * @param sprite Sprite of the button
+ * @return A function resizing the button
+ */
 Tacticode.Fight.buttonMouseOver = function(sprite){
 	return function(){
 		sprite.scale.x = 1;
@@ -41,6 +61,11 @@ Tacticode.Fight.buttonMouseOver = function(sprite){
 	}
 }
 
+/**
+ * Animation when moving the mouse away from a button
+ * @param sprite Sprite of the button
+ * @return A function resizing the button
+ */
 Tacticode.Fight.buttonMouseOut = function(sprite){
 	return function(){
 		sprite.scale.x = 0.9;
@@ -48,6 +73,9 @@ Tacticode.Fight.buttonMouseOut = function(sprite){
 	}
 }
 
+/**
+ * Initialize the fight UI
+ */
 Tacticode.Fight.initButtons = function(){
 	var fight = Tacticode.Fight;
 	
@@ -99,6 +127,11 @@ Tacticode.Fight.initButtons = function(){
 	fight.speedText = fight.initText(fight.speedButton.x - 35, fight.speedButton.y);
 }
 
+/**
+ * Initialize the text of the animation speed
+ * @param x Horizontal position of the text
+ * @param y Vertical position of the text
+ */
 Tacticode.Fight.initText = function(x, y) {
 	var text = new PIXI.Text("x1", {
 		font : "bold 24px Arial",
@@ -111,6 +144,9 @@ Tacticode.Fight.initText = function(x, y) {
 	return text;
 }
 
+/**
+ * Generator animating the fight
+ */
 Tacticode.Fight.mainLoop = function* (){
 	var fight = Tacticode.Fight;
 	var data = fight.fightData;
@@ -169,6 +205,9 @@ Tacticode.Fight.mainLoop = function* (){
 	}
 }
 
+/**
+ * Generator animation a character action
+ */
 Tacticode.Fight.animateAction = function* () {
 	var fight = Tacticode.Fight;
 	var data = fight.fightData;
@@ -195,6 +234,11 @@ Tacticode.Fight.animateAction = function* () {
 	}
 }
 
+/**
+ * Convert player id to name
+ * @param id Player id
+ * @return Player name
+ */
 Tacticode.Fight.getPlayerNameFromId = function (id) {
 	for (let team of Tacticode.Fight.fightData.teams) {
 		if (team.id === id) {
@@ -219,6 +263,9 @@ Tacticode.Fight.undoActions = function () {
 		fight.undoAction();
 }
 
+/**
+ * Reset animation
+ */
 Tacticode.Fight.undoAllActions = function () {
 	var fight = Tacticode.Fight;
 	while (fight.currentAction >= 0)
@@ -226,6 +273,9 @@ Tacticode.Fight.undoAllActions = function () {
 	fight.currentAction = 0;
 }
 
+/**
+ * Undo last fight action
+ */
 Tacticode.Fight.undoAction = function () {
 	var fight = Tacticode.Fight;
 	if (fight.undoData[fight.currentAction].entity) {
@@ -249,6 +299,9 @@ Tacticode.Fight.isCurrentActionInstant = function () {
 	return false;
 };
 
+/**
+ * Generator loading fight data and playing animation
+ */
 Tacticode.Fight.play = function (data) {
 	var fight = Tacticode.Fight;
 	fight.fightData = data;
@@ -262,12 +315,20 @@ Tacticode.Fight.play = function (data) {
 	});
 }
 
+/**
+ * Generator used to pause animation in seconds
+ * @param time Time to wait in seconds
+ */
 Tacticode.Fight.wait = function* (time){
 	var nbFrames = 60 * time;
 	while (--nbFrames >= 0)
 		yield null;
 }
 
+/**
+ * Generator used to pause animation in frames
+ * @param nbFrames Number of frames to wait
+ */
 Tacticode.Fight.waitFrames = function* (nbFrames){
 	while (--nbFrames >= 0)
 		yield null;

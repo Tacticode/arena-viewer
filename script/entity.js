@@ -4,6 +4,13 @@
 
 "use strict"
 
+/**
+ * Class entity, contains the character data
+ * @contructor
+ * @param entity Data of the entity
+ * @param animator EntityAnimatort used by this entity
+ * @param callback Function called when the textures are loaded
+ */
 Tacticode.Entity = function(entity, animator, callback) {
 	this.id = entity.id;
 	this.x = entity.x;
@@ -48,6 +55,10 @@ Tacticode.Entity.HB_Y = -45;
 Tacticode.Entity.HB_WIDTH = 50;
 Tacticode.Entity.HB_X = -Tacticode.Entity.HB_WIDTH / 2;
 
+/**
+ * Initialize the text showing the character name
+ * @return the text
+ */
 Tacticode.Entity.prototype.initText = function() {
 	var text = new PIXI.Text(this.name, {
 		font : Tacticode.Entity.FONT,
@@ -63,6 +74,10 @@ Tacticode.Entity.prototype.initText = function() {
 	return text;
 }
 
+/**
+ * Initialize the health bar
+ * @return the health bar
+ */
 Tacticode.Entity.prototype.initHealthBar = function() {
 	var bar = new PIXI.Graphics();
 	bar.beginFill(0x00FF00);
@@ -73,11 +88,18 @@ Tacticode.Entity.prototype.initHealthBar = function() {
 	return bar;
 }
 
+/**
+ * Give a random character name (for tests)
+ * @return the name
+ */
 Tacticode.Entity.prototype.randomName = function() {
 	var names = ["Toto", "Titi", "Tutu", "Tata"];
 	return names[Math.floor(Math.random() * names.length)];
 }
 
+/**
+ * Update the health bar to show the current health
+ */
 Tacticode.Entity.prototype.updateHealthBar = function() {
 	var bar = this.healthBar;
 	var health = Math.min(Math.max(this.health / this.maxHealth, 0), 1);
@@ -100,15 +122,22 @@ Tacticode.Entity.prototype.updateHealthBar = function() {
 		Tacticode.Entity.HB_WIDTH, Tacticode.Entity.HB_HEIGHT);
 }
 
+/**
+ * Update the sprite position based on the character 3d position
+ */
 Tacticode.Entity.prototype.updateSpritePos = function() {
 	var coords = Tacticode.Map.mapToProjection(this.x, this.y, this.z);
     this.container.x = coords[0] + Tacticode.GAME_WIDTH / 2;
     this.container.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
-	
-	/*var darkness = 0xFF - this.z * 15;
-    this.sprite.tint = (darkness << 16) + (darkness << 8) + darkness;*/
 }
 
+/**
+ * Update the sprite based on the direction the character is looking
+ * @param startX x position of the character
+ * @param startY y position of the character
+ * @param endX x position the character is looking at
+ * @param endY y position the character is looking at
+ */
 Tacticode.Entity.prototype.updateSpriteDirection = function(startX, startY, endX, endY) {
 	if (startX === endX && startY === endY) {
 		return;
@@ -124,6 +153,10 @@ Tacticode.Entity.prototype.updateSpriteDirection = function(startX, startY, endX
 	this.sprite.texture = this.textures[id];
 }
 
+/**
+ * Change sprite enable/disable attack
+ * @param attack true if the character is attacking
+ */
 Tacticode.Entity.prototype.updateSpriteAttack = function(attack = true){
 	if (attack)
 		this.textureId += 4;
@@ -152,17 +185,27 @@ Tacticode.Entity.prototype.debug = function() {
  * Tacticode - Entity Animator
  */
 
-Tacticode.EntityAnimator = function (stage) {
+/**
+ * Create an EntityAnimator
+ * @constructor
+ * @param stage The container of the entities
+ */
+Tacticode.EntityAnimator = function(stage) {
 	this.container = new PIXI.Container();
 	this.entities = {};
 	this.map = null;
-
 	this.teams = {};
 	this.currentTeamIndex = 0;
 
 	stage.addChild(this.container);
 }
 
+/**
+ * Load the entities
+ * @param entities Array of entities to load
+ * @param map The map
+ * @param next Function called when all the entities are loaded
+ */
 Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) {
 	this.map = map;
 	var loadedEntities = 0;
@@ -177,7 +220,14 @@ Tacticode.EntityAnimator.prototype.loadEntities = function(entities, map, next) 
 	}
 }
 
-Tacticode.EntityAnimator.prototype.getEntityOnCell = function (x, y, z) {
+/**
+ * Get the entity from a cell position
+ * @param x X position
+ * @param y Y position
+ * @param z Z position
+ * @return The entity on the cell, null if the cell is empty
+ */
+Tacticode.EntityAnimator.prototype.getEntityOnCell = function(x, y, z) {
 	for (var key in this.entities) {
 		let entity = this.entities[key];
 		if (entity.x == x && entity.y == y && entity.z == z && entity.sprite.renderable) {
@@ -187,6 +237,10 @@ Tacticode.EntityAnimator.prototype.getEntityOnCell = function (x, y, z) {
 	return null;
 };
 
+/**
+ * Generator animating an action
+ * @param action Action to animate
+ */
 Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	var entity = this.entities[action.entity];
 	
@@ -248,6 +302,11 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	}
 }
 
+/**
+ * Save an entity current animation state
+ * @param action Current animation
+ * @return The saved animation state
+ */
 Tacticode.EntityAnimator.prototype.backupEntity = function(action){
 	var entity = this.entities[action.entity];
 	var sprite = entity.sprite;
@@ -265,6 +324,10 @@ Tacticode.EntityAnimator.prototype.backupEntity = function(action){
 	};
 }
 
+/**
+ * Restore a saved entity animation state
+ * @param backup Saved animation state
+ */
 Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
 	var entity = backup.entity;
 	var sprite = entity.sprite;
@@ -280,7 +343,12 @@ Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
 	entity.updateHealthBar();
 }
 
-Tacticode.EntityAnimator.prototype.getTeamIndex = function (team) {
+/**
+ * Get team index
+ * @param team The team
+ * @return The team index
+ */
+Tacticode.EntityAnimator.prototype.getTeamIndex = function(team) {
 	if (!this.teams[team]) {
 		this.teams[team] = this.currentTeamIndex++;
 	}

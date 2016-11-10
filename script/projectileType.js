@@ -4,6 +4,9 @@
 
 "use strict"
 
+/**
+ * Projectile types
+ */
 Tacticode.Projectile.Type = {
 	FireParticle:{name:"FireParticle", speed:4, orientedTexture:false,
 			texturePath:"effect/particle_fire.png",
