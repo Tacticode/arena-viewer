@@ -15,6 +15,10 @@
 Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 	this.start = startPosition;
 	this.end = endPosition;
+    
+    if (type.trajectory == "fall")
+        this.start.y -= 700;
+    
 	var x = startPosition.x - endPosition.x;
 	var y = startPosition.y - endPosition.y; // ajouter z ?
 	this.nbFrames = Math.sqrt((x * x) + (y * y)) / type.speed;
@@ -23,6 +27,8 @@ Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 	this.sprite = new PIXI.Sprite(type.texture);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
+    this.sprite.x = startPosition.x;
+    this.sprite.y = startPosition.y;
 	this.animator = animator;
 	this.particle = null;
 	if (type.particleType != null)
