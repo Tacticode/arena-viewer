@@ -17,7 +17,7 @@ Tacticode.Projectile.Type = {
 	HolyParticle:{name:"HolyParticle", speed:3,
             orientedTexture:false, texturePath:"effect/particle_holyhand.png",
 			particleType:null},
-	
+
     Hit:{name:"HIT", speed:15,
             orientedTexture:false, texturePath:null, particleType:null},
 	Arrow:{name:"ARROW", speed:6,
@@ -37,21 +37,21 @@ Tacticode.Projectile.Type = {
 	Ice:{name:"ICEBALL", speed:8,
             orientedTexture:false, texturePath:"effect/iceball.png",
 			particleType:"IceParticle", particleDistance:30},
-    Meteore:{name:"METEORE", speed:12,
+    Meteore:{name:"METEOR", speed:12,
             orientedTexture:false, trajectory:"fall",
             texturePath:"effect/meteore.png", particleType:"FireParticle",
             particleDistance:100},
     HolyHand:{name:"HOLY_HAND", speed:4,
             orientedTexture:false, texturePath:"effect/holyhand.png",
 			particleType:"HolyParticle", particleDistance:30},
-    
+
     /*FireTrap:{name:"FIRE_TRAP"},
-    
+
     Smash:{name:"SMASH"},
-    
+
     Bladestorm:{name:"BLADESTORM"},
-    
+
     ShieldBump:{name:"FIRE_TRAP"},
-    
+
     ShieldBreak:{name:"FIRE_TRAP"}*/
 }
