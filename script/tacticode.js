@@ -19,8 +19,6 @@ var Tacticode = {
 Tacticode.init = function (parent) {
 	Tacticode.stage = new PIXI.Container();
 	Tacticode.renderer = new PIXI.autoDetectRenderer(Tacticode.GAME_WIDTH, Tacticode.GAME_HEIGHT);
-	Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.stage);
-	Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.stage);
 	Tacticode.cellInformation = new Tacticode.CellInformation(Tacticode.stage);
 	Tacticode.overlayManager = new Tacticode.OverlayManager(Tacticode.stage);
 	Tacticode.turnManager = new Tacticode.TurnManager(Tacticode.stage);
@@ -51,6 +49,8 @@ Tacticode.loadMap = function (mapData, callback) {
 	Tacticode.map = new Tacticode.Map();
 	Tacticode.map.loadFromData(mapData, function () {
 		Tacticode.stage.addChildAt(Tacticode.map.container, 0);
+		Tacticode.projectiles = new Tacticode.ProjectilesAnimator(Tacticode.map.container);
+		Tacticode.entities = new Tacticode.EntityAnimator(Tacticode.map.container);
 		callback();
 	});
 	Tacticode.map.onCellSelected = function (cell) {

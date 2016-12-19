@@ -106,6 +106,17 @@ Tacticode.Map.prototype.containsCell = function (x, y, z) {
     return (this.getCell(x, y, z) != null);
 };
 
+Tacticode.Map.prototype.updateZOrder = function (sprite, x, y, z) {
+	var children = this.container.children;
+	var i = 0;
+
+	sprite.zOrder = x + y + z;
+	this.container.removeChild(sprite);
+	while (i < children.length && children[i].zOrder < sprite.zOrder)
+		i++;
+	this.container.addChildAt(sprite, i);
+};
+
 /**
  * Loads the JSON file corresponding to the specified style name.
  * Calls the callback upon success.
@@ -174,6 +185,7 @@ Tacticode.Map.prototype._createSprites = function () {
     if (this.background) {
         var background = new PIXI.Sprite(PIXI.Texture.fromImage(Tacticode.ASSETS_PATH + "textures/" + this.background));
         this.container.addChild(background);
+        this.updateZOrder(background, -100, -100, -100);
     }
     this.cells.sort(this._compareCells);
     for (var i = 0; i < this.cells.length; ++i) {
@@ -211,6 +223,7 @@ Tacticode.Map.prototype._createSpriteAtPosition = function (texture, x, y, z) {
     tile.position.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
     
     this.container.addChild(tile);
+    this.updateZOrder(tile, x, y, z);
 	
 	return tile;
 };

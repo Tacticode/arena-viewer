@@ -32,6 +32,7 @@ Tacticode.Entity = function(entity, animator, callback) {
 	Tacticode.entities.container.addChild(this.container);
 	this.text = this.initText();
 	this.healthBar = this.initHealthBar();
+	Tacticode.map.updateZOrder(this.container, this.x, this.y, this.z);
 	
 	var e = this;
 	Tacticode.CustomTexture.entityTexture(this, function(textures) {
@@ -40,7 +41,6 @@ Tacticode.Entity = function(entity, animator, callback) {
 		e.sprite = new PIXI.Sprite(e.textures[0]);
 		e.sprite.anchor.x = 0.5;
 		e.sprite.anchor.y = 0.5;
-		// Tacticode.entities.container.addChild(e.sprite);
 		e.container.addChild(e.sprite);
 		e.updateSpritePos();
 		callback();
@@ -127,8 +127,9 @@ Tacticode.Entity.prototype.updateHealthBar = function() {
  */
 Tacticode.Entity.prototype.updateSpritePos = function() {
 	var coords = Tacticode.Map.mapToProjection(this.x, this.y, this.z);
-    this.container.x = coords[0] + Tacticode.GAME_WIDTH / 2;
-    this.container.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
+	this.container.x = coords[0] + Tacticode.GAME_WIDTH / 2;
+	this.container.y = coords[1] + Tacticode.GAME_HEIGHT / 4;
+	Tacticode.map.updateZOrder(this.container, this.x, this.y, this.z);
 }
 
 /**
@@ -191,13 +192,11 @@ Tacticode.Entity.prototype.debug = function() {
  * @param stage The container of the entities
  */
 Tacticode.EntityAnimator = function(stage) {
-	this.container = new PIXI.Container();
+	this.container = stage;
 	this.entities = {};
 	this.map = null;
 	this.teams = {};
 	this.currentTeamIndex = 0;
-
-	stage.addChild(this.container);
 }
 
 /**
@@ -289,11 +288,9 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 			startZ = endZ + 1;
 		}
 		
-		var startCoords = Tacticode.Map.mapToProjection(startX, startY, startZ);
-		var endCoords = Tacticode.Map.mapToProjection(endX, endY, endZ);
 		var nbFrames = Tacticode.projectiles.addWithString(
-		{x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4},
-		{x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4},
+		{ x:startX, y:startY, z:startZ },
+		{ x:endX, y:endY, z:endZ },
 		action.skill);
 		entity.updateSpriteAttack(true);
 		yield* Tacticode.Fight.waitFrames(20);
@@ -341,6 +338,7 @@ Tacticode.EntityAnimator.prototype.undoEntityAnimation = function(backup){
 	container.y = backup.pixelY;
 	container.renderable = backup.alive;
 	entity.updateHealthBar();
+	Tacticode.map.updateZOrder(container, entity.x, entity.y, entity.z);
 }
 
 /**

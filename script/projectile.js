@@ -13,22 +13,29 @@
  * @param animator ProjectileAnimator to use
  */
 Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
-	this.start = startPosition;
-	this.end = endPosition;
+	this.startPosition = startPosition;
+	this.endPosition = endPosition;
     
-    if (type.trajectory == "fall")
-        this.start.y -= 700;
+	if (type.trajectory == "fall")
+		this.startPosition.z += 10;
+    
+	var startCoords = Tacticode.Map.mapToProjection(startPosition.x, startPosition.y, startPosition.z);
+	var endCoords = Tacticode.Map.mapToProjection(endPosition.x, endPosition.y, endPosition.z);
+	this.startPixels = {x:startCoords[0] + Tacticode.GAME_WIDTH / 2, y:startCoords[1] + Tacticode.GAME_HEIGHT / 4};
+	this.endPixels = {x:endCoords[0] + Tacticode.GAME_WIDTH / 2, y:endCoords[1] + Tacticode.GAME_HEIGHT / 4};
+	this.position = {x:startPosition.x, y:startPosition.y, z:startPosition.z};
     
 	var x = startPosition.x - endPosition.x;
-	var y = startPosition.y - endPosition.y; // ajouter z ?
-	this.nbFrames = Math.sqrt((x * x) + (y * y)) / type.speed;
+	var y = startPosition.y - endPosition.y;
+    var z = startPosition.z - endPosition.z;
+	this.nbFrames = 50 * Math.sqrt((x * x) + (y * y) + (z * z)) / type.speed;
 	this.currentFrame = 0;
 	this.type = type;
 	this.sprite = new PIXI.Sprite(type.texture);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
-    this.sprite.x = startPosition.x;
-    this.sprite.y = startPosition.y;
+	this.sprite.x = this.startPixels.x;
+	this.sprite.y = this.startPixels.y;
 	this.animator = animator;
 	this.particle = null;
 	if (type.particleType != null)
@@ -38,7 +45,8 @@ Tacticode.Projectile = function(startPosition, endPosition, type, animator) {
 				break;
 			}
 	if (type.orientedTexture)
-		this.sprite.rotation = Math.atan2(y, x);
+		this.sprite.rotation = Math.atan2(startCoords.y - endCoords.y, startCoords.x - endCoords.x);
+	Tacticode.map.updateZOrder(this.sprite, x, y, z);
 }
 
 /**
@@ -58,8 +66,9 @@ Tacticode.randomInt = function (min, max) {
  * @return The ending position of the move
  */
 Tacticode.Projectile.randomMove = function(startPos, length){
-	return {x: startPos.x + Tacticode.randomInt(-length, length),
-			y: startPos.y + Tacticode.randomInt(-length, length)}
+	return {x: startPos.x + Math.random(-length, length),
+			y: startPos.y + Math.random(-length, length),
+			z: startPos.z + Math.random(-length, length)}
 }
 
 /**
@@ -68,13 +77,13 @@ Tacticode.Projectile.randomMove = function(startPos, length){
 Tacticode.Projectile.prototype.particleEffect = function() {
 	if (this.currentFrame > this.nbFrames){
 		for (var i = 0; i < 10; i++){
-			var pos = {x:this.sprite.x,	y:this.sprite.y};
+			var pos = {x:this.position.x, y:this.position.y, z:this.position.z};
 			var endPos = Tacticode.Projectile.randomMove(pos, this.type.particleDistance);
 			this.animator.add(pos, endPos, this.particle);
 		}
 	}
 	else if (Math.random() < 0.2){
-		var pos = {x:this.sprite.x, y:this.sprite.y};
+		var pos = {x:this.position.x, y:this.position.y, z:this.position.z};
 		var endPos = Tacticode.Projectile.randomMove(pos, this.type.particleDistance);
 		this.animator.add(pos, endPos, this.particle);
 	}
@@ -85,8 +94,12 @@ Tacticode.Projectile.prototype.particleEffect = function() {
  */
 Tacticode.Projectile.prototype.update = function() {
 	var progress = this.currentFrame / this.nbFrames;
-	this.sprite.position.x = this.start.x * (1 - progress) + this.end.x * progress;
-	this.sprite.position.y = this.start.y * (1 - progress) + this.end.y * progress;
+	this.sprite.position.x = this.startPixels.x * (1 - progress) + this.endPixels.x * progress;
+	this.sprite.position.y = this.startPixels.y * (1 - progress) + this.endPixels.y * progress;
+	this.position.x = this.startPosition.x * (1 - progress) + this.endPosition.x * progress;
+	this.position.y = this.startPosition.y * (1 - progress) + this.endPosition.y * progress;
+	this.position.z = this.startPosition.z * (1 - progress) + this.endPosition.z * progress;
+	Tacticode.map.updateZOrder(this.sprite, this.position.x, this.position.y, this.position.z);
 	this.currentFrame += Tacticode.speed;
 	if (this.particle != null)
 		this.particleEffect();
@@ -133,12 +146,19 @@ Tacticode.ProjectilesAnimator.checkDelete = function(p) {
 Tacticode.ProjectilesAnimator.prototype.animate = function() {
 	if (!Tacticode.Fight.isPlaying)
 		return;
+	var toRemove = [];
 	for (var p of this.projectiles) {
-		p.update();
-		if (p.currentFrame > p.nbFrames)
+		if (p.currentFrame > p.nbFrames) {
 			this.container.removeChild(p.sprite);
+			toRemove.push(p.sprite);
+        }
+        else
+			p.update();
 	}
-	this.projectiles = this.projectiles.filter(Tacticode.ProjectilesAnimator.checkDelete); // TODO optimisation ?
+	function filter (sprite) {
+		return !(sprite in toRemove);
+	}
+	this.projectiles = this.projectiles.filter(filter);
 }
 
 /**
