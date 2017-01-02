@@ -32,7 +32,11 @@ Tacticode.WinnerManager.prototype.setWinner = function (winner) {
 		this.textWinner.text = '';
 		this.dimmer.visible = false;
 	} else {
-		this.textWinner.text = 'WINNER: ' + winner;
+		if (winner === 0) {
+			this.textWinner.text = winner + ' won!';
+		} else {
+			this.textWinner.text = 'Tie! No winner.';
+		}
 		this.textWinner.x = 512 - this.textWinner.width / 2;
 		this.textWinner.y = 384 - this.textWinner.height / 2;
 		this.dimmer.visible = true;
