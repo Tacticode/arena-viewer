@@ -265,7 +265,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 	if (action.type === "error") {
 		let lines;
 		if (action.start === action.end) {
-			lines = "(line " + action.start + "")";
+			lines = "(line " + action.start + ")";
 		} else {
 			lines = "(lines " + action.start + "-" + action.end + ")";
 		}
