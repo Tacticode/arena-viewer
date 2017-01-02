@@ -295,7 +295,7 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 			yield null;
 		}
 	}
-	else if (action.type == "skill") {
+	else if (action.type == "skill" && !action.blocked) {
 		Tacticode.sound.play('swing');
 
 		if (startX === endX && startY === endY) {
