@@ -262,6 +262,16 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		entity.container.renderable = false;
 		return;
 	}
+	if (action.type === "error") {
+		let lines;
+		if (action.start === action.end) {
+			lines = "(line " + action.start + "")";
+		} else {
+			lines = "(lines " + action.start + "-" + action.end + ")";
+		}
+		Tacticode.displayError("[" + entity.name + "]: " + action.error + lines);
+		return;
+	}
 	if (action.type != "move" && action.type != "skill") {
 		console.log("Unknown action type " + action.type);
 		return;

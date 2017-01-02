@@ -29,7 +29,8 @@ Tacticode.init = function (parent) {
 	Tacticode._createVolumeButtons();
 	Tacticode.speed = 1;
 
-	document.getElementById(parent).appendChild(Tacticode.renderer.view);
+	Tacticode.parent = document.getElementById(parent);
+	Tacticode.parent.appendChild(Tacticode.renderer.view);
 
     requestAnimationFrame(Tacticode._animate);
 };
@@ -68,6 +69,13 @@ Tacticode.update = function () {
 	if (Tacticode.animateFight) {
 		Tacticode.animateFight.next();
 	}
+};
+
+/**
+ * Displays an error message next to the canvas.
+ */
+Tacticode.displayError = function (text) {
+	$("<p>").text(text).addClass("tacticode-error").appendTo($(Tacticode.parent));
 };
 
 /**
