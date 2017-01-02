@@ -263,6 +263,10 @@ Tacticode.EntityAnimator.prototype.animateAction = function* (action) {
 		entity.container.renderable = false;
 		return;
 	}
+	if (action.type != "move" && action.type != "skill") {
+		console.log("Unknown action type " + action.type);
+		return;
+	}
 	
 	var startX = entity.x;
 	var startY = entity.y;
