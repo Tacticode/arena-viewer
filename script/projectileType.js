@@ -28,7 +28,7 @@ Tacticode.Projectile.Type = {
             texturePath:"effect/snipe.png", particleType:"FireParticle",
             particleDistance:30
     },
-    PassThroughArrow:{name:"PASS_THROUGH_ARROW", speed:6,
+    GhostArrow:{name:"GHOST_ARROW", speed:6,
             orientedTexture:true,
             texturePath:"effect/ghostarrow.png", particleType:null},
 	Fire:{name:"FIREBALL", speed:15,
@@ -37,7 +37,7 @@ Tacticode.Projectile.Type = {
 	Ice:{name:"ICEBALL", speed:8,
             orientedTexture:false, texturePath:"effect/iceball.png",
 			particleType:"IceParticle", particleDistance:30},
-    Meteore:{name:"METEOR", speed:12,
+    Meteor:{name:"METEOR", speed:12,
             orientedTexture:false, trajectory:"fall",
             texturePath:"effect/meteore.png", particleType:"FireParticle",
             particleDistance:100},
